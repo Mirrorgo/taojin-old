@@ -1,4 +1,5 @@
 # 目录结构
+* public
 * src
 * taojin
   * options.html
