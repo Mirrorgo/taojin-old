@@ -9,7 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         //用于配置多页面应用
-        main: resolve(__dirname, "index.html"), //http://localhost:3000 和 http://localhost:3000/index.html 都可以访问
+        main: resolve(__dirname, "index.html"), //http://localhost:3000 和 http://localhost:3000/popup.html 都可以访问
         nested: resolve(__dirname, "/taojin/options.html"), //http://localhost:3000/taojin/options.html
       },
     },
