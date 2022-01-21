@@ -4,7 +4,7 @@
   "version": "0.1",
   "manifest_version": 3,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "service_worker.js"
   },
   "permissions": ["storage", "activeTab", "scripting", "bookmarks"],
   "action": {
@@ -23,5 +23,12 @@
     "48": "/images/get_started48.png",
     "128": "/images/get_started128.png"
   },
-  "options_page": "/taojin/options.html"
+  "options_page": "/taojin/options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://*.juejin.cn/*", "https://www.baidu.com/*"],
+      "css": ["./content_script/my-styles.css"],
+      "js": ["./content_script/content-script.js"]
+    }
+  ]
 }
