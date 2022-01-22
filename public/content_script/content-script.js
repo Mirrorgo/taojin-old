@@ -1,5 +1,4 @@
 //// content-script.js ////
-document.body.style.backgroundColor = "orange";
 let searchbar = document.createElement("iframe");
 searchbar.src = chrome.runtime.getURL("index.html");
 // "chrome-extension://llgmdnnodeomlbdnkckaineblidoahia/taojin/searchbar.html";
