@@ -1,0 +1,9 @@
+#taojin-searchbar {
+  position: fixed;
+  left: 10px;
+  top: 150px;
+  width: 200px;
+  height: 300px;
+  resize: both;
+  z-index: 99;
+}
