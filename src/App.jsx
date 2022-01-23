@@ -12,6 +12,9 @@ function App() {
         <li>
           <a href="/taojin/searchbar/index.html">searchbar</a>
         </li>
+        <li>
+          <a href="/taojin/collections/index.html">collections</a>
+        </li>
       </ul>
     </div>
   );

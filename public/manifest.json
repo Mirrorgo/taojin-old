@@ -30,5 +30,6 @@
       "css": ["./content_script/my-styles.css"],
       "js": ["./content_script/content-script.js"]
     }
-  ]
+  ],
+  "devtools_page": "devtools.html"
 }
