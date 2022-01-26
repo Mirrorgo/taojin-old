@@ -28,9 +28,15 @@ const SHORTCUTS = {
   //ctrl+/激活各种拓展操作
   // /拓展操作
 };
-//STAR:RTTest都是网上找的demo仅用于测试
+// STAR:RTTest都是网上找的demo仅用于测试
 // TODO:list-item需要增加tab&shiftTab调整缩进的方式
 // 各级标题再次输入同一shortcut变普通文本
+// 代码块中的内容一键复制
+// FIXME:slate中tab无效的问题(会丢失焦点)
+// FIXME:一二级标题样式相同
+// FIXME:此文件奇数次保存会白屏报错,根据github issue,为slate.js的问题
+// 大型组件连续保存导致vite频繁热更新会导致vscode闪退=>解决方案:降低保存频率(疑似vite的性能问题)
+
 export default function RichText() {
   const [value, setValue] = useState(
     JSON.parse(localStorage.getItem("content")) ||
@@ -59,6 +65,7 @@ export default function RichText() {
       }}
     >
       <Editable
+        className="slate"
         renderElement={renderElement}
         placeholder="这里可以写markdown"
         spellCheck //?
@@ -146,7 +153,6 @@ const withShortcuts = (editor) => {
               split: true,
             });
           }
-
           return;
         }
       }
@@ -167,23 +173,59 @@ const Element = ({ attributes, children, element }) => {
         </blockquote>
       );
     case "bulleted-list":
-      return <ul {...attributes}>{children}</ul>;
+      return (
+        <ul style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </ul>
+      );
     case "heading-one":
-      return <h1 {...attributes}>{children}</h1>;
+      return (
+        <h1 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </h1>
+      );
     case "heading-two":
-      return <h2 {...attributes}>{children}</h2>;
+      return (
+        <h2 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </h2>
+      );
     case "heading-three":
-      return <h3 {...attributes}>{children}</h3>;
+      return (
+        <h3 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </h3>
+      );
     case "heading-four":
-      return <h4 {...attributes}>{children}</h4>;
+      return (
+        <h4 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </h4>
+      );
     case "heading-five":
-      return <h5 {...attributes}>{children}</h5>;
+      return (
+        <h5 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </h5>
+      );
     case "heading-six":
-      return <h6 {...attributes}>{children}</h6>;
+      return (
+        <h6 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </h6>
+      );
     case "list-item":
-      return <li {...attributes}>{children}</li>;
+      return (
+        <li style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </li>
+      );
     default:
-      return <p {...attributes}>{children}</p>;
+      return (
+        <p style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+          {children}
+        </p>
+      );
   }
 };
 

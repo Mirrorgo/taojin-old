@@ -1,8 +1,17 @@
+.slate {
+  box-sizing: border-box;
+}
 .block-quote {
   /* 原本的block-quote太浪费空间了,就改了margin */
   margin-left: 10px;
   margin-right: 10px;
   padding-left: 10px;
-  border-left: 2px solid rgb(221, 221, 221);
-  color: rgb(170, 170, 170);
+  border-left: 2px solid hsl(0, 0%, 87%);
+  color: hsl(0, 0%, 40%);
+}
+@media screen and (max-width: 550px) {
+  .block-quote {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 }

@@ -2,7 +2,7 @@
   "name": "taojin",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --port 10333",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
