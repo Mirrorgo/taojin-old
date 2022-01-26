@@ -2,13 +2,15 @@
   "name": "taojin",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 10333",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "slate": "^0.72.3",
+    "slate-history": "^0.66.0",
     "slate-react": "^0.72.6"
   },
   "devDependencies": {

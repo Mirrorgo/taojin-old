@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
+import { Slate, Editable, withReact } from "slate-react";
 import {
   Editor,
   Transforms,
@@ -7,10 +8,7 @@ import {
   createEditor,
   Element as SlateElement,
 } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-
-import "./index.css";
 
 const SHORTCUTS = {
   "*": "list-item",
@@ -23,50 +21,26 @@ const SHORTCUTS = {
   "####": "heading-four",
   "#####": "heading-five",
   "######": "heading-six",
-  //TODO:
-  //```代码块
-  //ctrl+/激活各种拓展操作
-  // /拓展操作
 };
-//STAR:RTTest都是网上找的demo仅用于测试
-// TODO:list-item需要增加tab&shiftTab调整缩进的方式
-// 各级标题再次输入同一shortcut变普通文本
-export default function RichText() {
-  const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem("content")) ||
-      // chrome.storage.sync.get("content", function (result) {
-      //   console.log("Value currently is " + result.key);
-      // })
-      initialValue
-  );
+export default function RTTest1() {
+  const [value, setValue] = useState(initialValue);
   const renderElement = useCallback((props) => <Element {...props} />, []);
-  // 创建一个不会在渲染中变化的 Slate 编辑器对象
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
     []
-  ); //useMemo传入空数组代表仅计算一次 memoized 的值,也就是初始化的时候
+  );
   return (
-    <Slate
-      editor={editor}
-      value={value}
-      onChange={(value) => {
-        setValue(value);
-        const collections = JSON.stringify(value);
-        localStorage.setItem("content", collections);
-        // chrome.storage.sync.set({ content: collections }, function () {
-        //   console.log("Value is set to " + value);
-        // });
-      }}
-    >
+    <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
       <Editable
         renderElement={renderElement}
-        placeholder="这里可以写markdown"
-        spellCheck //?
-        autoFocus //?
+        placeholder="Write some markdown..."
+        spellCheck
+        autoFocus
       />
     </Slate>
   );
 }
+
 const withShortcuts = (editor) => {
   const { deleteBackward, insertText } = editor;
   editor.insertText = (text) => {
@@ -161,11 +135,7 @@ const withShortcuts = (editor) => {
 const Element = ({ attributes, children, element }) => {
   switch (element.type) {
     case "block-quote":
-      return (
-        <blockquote className="block-quote" {...attributes}>
-          {children}
-        </blockquote>
-      );
+      return <blockquote {...attributes}>{children}</blockquote>;
     case "bulleted-list":
       return <ul {...attributes}>{children}</ul>;
     case "heading-one":

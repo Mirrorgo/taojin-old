@@ -5,6 +5,7 @@ export default function App() {
   return (
     <div>
       <h2 className="Group-Name">这是Collections的页面的东西</h2>
+      <h3>RichText</h3>
       <RichText></RichText>
     </div>
   );

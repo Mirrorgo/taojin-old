@@ -1,3 +1,8 @@
-.editor {
-  background-color: rgb(233, 227, 227);
+.block-quote {
+  /* 原本的block-quote太浪费空间了,就改了margin */
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 10px;
+  border-left: 2px solid rgb(221, 221, 221);
+  color: rgb(170, 170, 170);
 }
