@@ -33,17 +33,17 @@ const SHORTCUTS = {
 // 各级标题再次输入同一shortcut变普通文本
 // 代码块中的内容一键复制
 // FIXME:slate中tab无效的问题(会丢失焦点)
-// FIXME:一二级标题样式相同
+// FIXME:一二级标题样式相同✅
 // FIXME:此文件奇数次保存会白屏报错,根据github issue,为slate.js的问题
 // 大型组件连续保存导致vite频繁热更新会导致vscode闪退=>解决方案:降低保存频率(疑似vite的性能问题)
 
-export default function RichText() {
+export default function RichText({ item }) {
   const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem("content")) ||
-      // chrome.storage.sync.get("content", function (result) {
-      //   console.log("Value currently is " + result.key);
-      // })
-      initialValue
+    // JSON.parse(localStorage.getItem("content")) || initialValue
+    item
+    // chrome.storage.sync.get("content", function (result) {
+    //   console.log("Value currently is " + result.key);
+    // })
   );
   const renderElement = useCallback((props) => <Element {...props} />, []);
   // 创建一个不会在渲染中变化的 Slate 编辑器对象
@@ -57,8 +57,9 @@ export default function RichText() {
       value={value}
       onChange={(value) => {
         setValue(value);
-        const collections = JSON.stringify(value);
-        localStorage.setItem("content", collections);
+        // const collections = JSON.stringify(value);
+        //TODO增加上存储功能
+        // localStorage.setItem("content", collections);
         // chrome.storage.sync.set({ content: collections }, function () {
         //   console.log("Value is set to " + value);
         // });
@@ -164,65 +165,150 @@ const withShortcuts = (editor) => {
   return editor;
 };
 
+// STAR:此处各级字体大小&行高采用的是tailwind css前六级字体的大小 👉 https://www.tailwindcss.cn/docs/font-size
+//语雀方案:
+//1.2.3.4级字体逐级减小,4级为16px(加粗);5级为15px(加粗);6级为15px(不加粗),与正文相同
+//So,参考语雀方案改动,123456逐级减小,均加粗,其余内容默认字号与6级字体相同
 const Element = ({ attributes, children, element }) => {
   switch (element.type) {
     case "block-quote":
       return (
-        <blockquote className="block-quote" {...attributes}>
+        <blockquote
+          className="block-quote"
+          style={{
+            fontSize: ".75rem",
+            lineHeight: "1rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </blockquote>
       );
     case "bulleted-list":
       return (
-        <ul style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <ul
+          style={{
+            fontSize: ".75rem",
+            lineHeight: "1rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </ul>
       );
     case "heading-one":
       return (
-        <h1 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <h1
+          style={{
+            fontSize: "1.5rem",
+            lineHeight: "2rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </h1>
       );
     case "heading-two":
       return (
-        <h2 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <h2
+          style={{
+            fontSize: "1.25rem",
+            lineHeight: "1.75rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </h2>
       );
     case "heading-three":
       return (
-        <h3 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <h3
+          style={{
+            fontSize: "1.125rem",
+            lineHeight: "1.75rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </h3>
       );
     case "heading-four":
       return (
-        <h4 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <h4
+          style={{
+            fontSize: "1rem",
+            lineHeight: "1.5rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </h4>
       );
     case "heading-five":
       return (
-        <h5 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <h5
+          style={{
+            fontSize: ".875rem",
+            lineHeight: "1.25rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </h5>
       );
     case "heading-six":
       return (
-        <h6 style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <h6
+          style={{
+            fontSize: ".75rem",
+            lineHeight: "1rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </h6>
       );
     case "list-item":
       return (
-        <li style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <li
+          style={{
+            fontSize: ".75rem",
+            lineHeight: "1rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </li>
       );
     default:
       return (
-        <p style={{ marginTop: ".3em", marginBottom: ".3em" }} {...attributes}>
+        <p
+          style={{
+            fontSize: ".75rem",
+            lineHeight: "1rem",
+            marginTop: ".3em",
+            marginBottom: ".3em",
+          }}
+          {...attributes}
+        >
           {children}
         </p>
       );

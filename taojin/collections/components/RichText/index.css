@@ -1,6 +1,3 @@
-.slate {
-  box-sizing: border-box;
-}
 .block-quote {
   /* 原本的block-quote太浪费空间了,就改了margin */
   margin-left: 10px;
