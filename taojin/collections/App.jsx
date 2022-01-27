@@ -3,19 +3,26 @@ import "./App.css";
 import Note from "./components/Note";
 import { useState } from "react";
 import { nanoid } from "nanoid";
-export default function App() {
-  let initialValue = testValue;
-  if (localStorage.getItem("collectionId1")?.items) {
-    initialValue = JSON.parse(localStorage.getItem("collectionId1"))?.items;
-    //FIXME:这里需要一层层还原回来,(是否本就支持json?)
-  }
-  const [items, setItems] = useState(
-    // JSON.parse(localStorage.getItem("collectionId1")?.items) || testValue
-    initialValue
-  );
-  // TODO:增加存储功能,传入id到note,note传递个函数到rich text
-  // JSON.parse(localStorage.getItem("content")) || initialValue
 
+const initialUserData = {
+  userName: "taojinUser1",
+  userCollections: [
+    {
+      collectionId: "sauqhwiqiu2s",
+      items: [],
+      collectionName: "xxx",
+      order: 1,
+      //review:[一个类似上面content的结构,可用于RichText]
+    },
+  ],
+};
+
+export default function App() {
+  if (!localStorage.getItem("taojinUserId1"))
+    localStorage.setItem("taojinUserId1", JSON.stringify(initialUserData));
+  const initialAppData = JSON.parse(localStorage.getItem("taojinUserId1"))
+    .userCollections[0].items; //先只弄一个collection的情况
+  const [items, setItems] = useState(initialAppData);
   const addNote = () => {
     const newKey = nanoid();
     const newItems = [
@@ -50,6 +57,7 @@ export default function App() {
               key={item.itemId}
               content={item.content}
               itemId={item.itemId}
+              saveItemData={saveItemData}
             ></Note>
           );
         })}
@@ -57,6 +65,36 @@ export default function App() {
     </div>
   );
 }
+
+const saveItemData = (itemId, itemType, newContent) => {
+  let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
+  let has = false;
+  let newItems = previousUserData.userCollections[0].items.map((item) => {
+    if (item.itemId === itemId) {
+      has = true;
+      return { ...item, content: newContent };
+    }
+    return item;
+  });
+  if (!has)
+    newItems = [
+      ...previousUserData.userCollections[0].items,
+      { itemId: itemId, itemType: itemType, content: newContent },
+    ];
+  let newUserData = {
+    userName: "taojinUser1",
+    userCollections: [
+      {
+        collectionId: "sauqhwiqiu2s",
+        items: newItems,
+        collectionName: "xxx",
+        order: 1,
+        //review:[一个类似上面content的结构,可用于RichText]
+      },
+    ],
+  };
+  localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
+};
 
 const testValue = [
   {

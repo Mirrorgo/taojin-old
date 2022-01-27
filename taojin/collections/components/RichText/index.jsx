@@ -37,7 +37,7 @@ const SHORTCUTS = {
 // FIXME:此文件奇数次保存会白屏报错,根据github issue,为slate.js的问题
 // 大型组件连续保存导致vite频繁热更新会导致vscode闪退=>解决方案:降低保存频率(疑似vite的性能问题)
 
-export default function RichText({ content, handleOnChange }) {
+export default function RichText({ content, saveItemData, itemId }) {
   const [value, setValue] = useState(
     // JSON.parse(localStorage.getItem("content")) || initialValue
     content
@@ -57,21 +57,14 @@ export default function RichText({ content, handleOnChange }) {
       value={value}
       onChange={(value) => {
         setValue(value);
-        // const collections = JSON.stringify(value);
-        handleOnChange(value); //TODO增加上存储功能
-        // localStorage.setItem("testUserId1", collections);
-        //⭐好像没法直接访问对象的...,不是嵌套结构
-        // chrome.storage.sync.set({ content: collections }, function () {
-        //   console.log("Value is set to " + value);
-        // });
       }}
     >
       <Editable
         className="slate"
         renderElement={renderElement}
         placeholder="这里可以写markdown"
-        spellCheck //?
         autoFocus //?
+        onBlur={saveItemData(itemId, "Note", value)}
       />
     </Slate>
   );
