@@ -37,10 +37,10 @@ const SHORTCUTS = {
 // FIXME:此文件奇数次保存会白屏报错,根据github issue,为slate.js的问题
 // 大型组件连续保存导致vite频繁热更新会导致vscode闪退=>解决方案:降低保存频率(疑似vite的性能问题)
 
-export default function RichText({ item }) {
+export default function RichText({ content, handleOnChange }) {
   const [value, setValue] = useState(
     // JSON.parse(localStorage.getItem("content")) || initialValue
-    item
+    content
     // chrome.storage.sync.get("content", function (result) {
     //   console.log("Value currently is " + result.key);
     // })
@@ -58,8 +58,9 @@ export default function RichText({ item }) {
       onChange={(value) => {
         setValue(value);
         // const collections = JSON.stringify(value);
-        //TODO增加上存储功能
-        // localStorage.setItem("content", collections);
+        handleOnChange(value); //TODO增加上存储功能
+        // localStorage.setItem("testUserId1", collections);
+        //⭐好像没法直接访问对象的...,不是嵌套结构
         // chrome.storage.sync.set({ content: collections }, function () {
         //   console.log("Value is set to " + value);
         // });
@@ -315,37 +316,37 @@ const Element = ({ attributes, children, element }) => {
   }
 };
 
-const initialValue = [
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: 'The editor gives you full control over the logic you can add. For example, it\'s fairly common to want to add markdown-like shortcuts to editors. So that, when you start a line with "> " you get a blockquote that looks like this:',
-      },
-    ],
-  },
-  {
-    type: "block-quote",
-    children: [{ text: "A wise quote." }],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: 'Order when you start a line with "## " you get a level-two heading, like this:',
-      },
-    ],
-  },
-  {
-    type: "heading-two",
-    children: [{ text: "Try it out!" }],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: 'Try it out for yourself! Try starting a new line with ">", "-", or "#"s.',
-      },
-    ],
-  },
-];
+// const initialValue = [
+//   {
+//     type: "paragraph",
+//     children: [
+//       {
+//         text: 'The editor gives you full control over the logic you can add. For example, it\'s fairly common to want to add markdown-like shortcuts to editors. So that, when you start a line with "> " you get a blockquote that looks like this:',
+//       },
+//     ],
+//   },
+//   {
+//     type: "block-quote",
+//     children: [{ text: "A wise quote." }],
+//   },
+//   {
+//     type: "paragraph",
+//     children: [
+//       {
+//         text: 'Order when you start a line with "## " you get a level-two heading, like this:',
+//       },
+//     ],
+//   },
+//   {
+//     type: "heading-two",
+//     children: [{ text: "Try it out!" }],
+//   },
+//   {
+//     type: "paragraph",
+//     children: [
+//       {
+//         text: 'Try it out for yourself! Try starting a new line with ">", "-", or "#"s.',
+//       },
+//     ],
+//   },
+// ];

@@ -2,22 +2,56 @@ import React from "react";
 import "./App.css";
 import Note from "./components/Note";
 import { useState } from "react";
+import { nanoid } from "nanoid";
 export default function App() {
-  const [items, setItems] = useState([testValue]);
+  let initialValue = testValue;
+  if (localStorage.getItem("collectionId1")?.items) {
+    initialValue = JSON.parse(localStorage.getItem("collectionId1"))?.items;
+    //FIXME:这里需要一层层还原回来,(是否本就支持json?)
+  }
+  const [items, setItems] = useState(
+    // JSON.parse(localStorage.getItem("collectionId1")?.items) || testValue
+    initialValue
+  );
   // TODO:增加存储功能,传入id到note,note传递个函数到rich text
   // JSON.parse(localStorage.getItem("content")) || initialValue
-  const addItem = () => {
-    const newItems = [...items, testValue];
+
+  const addNote = () => {
+    const newKey = nanoid();
+    const newItems = [
+      ...items,
+      {
+        itemId: newKey,
+        itemType: "Note",
+        content: [
+          {
+            type: "paragraph",
+            children: [
+              {
+                text: "newNote",
+              },
+            ],
+          },
+        ],
+      },
+    ];
     setItems(newItems);
   };
   return (
     <div>
       <h2 className="Group-Name">这是Collections的页面的东西</h2>
       <h3>RichText</h3>
-      <button onClick={addItem}>点击添加Note</button>
+      <button onClick={addNote}>点击添加Note</button>
       <div className="item-list">
         {items.map((item, index) => {
-          return <Note key={index} item={item}></Note>;
+          //if item type为note
+          return (
+            <Note
+              key={item.itemId}
+              content={item.content}
+              itemId={item.itemId}
+            ></Note>
+          );
         })}
       </div>
     </div>
@@ -26,16 +60,37 @@ export default function App() {
 
 const testValue = [
   {
-    type: "paragraph",
-    children: [
+    itemId: "qwyieo", //随便编的测试id
+    itemType: "Note",
+    content: [
       {
-        text: "test value",
+        type: "paragraph",
+        children: [
+          {
+            text: "test value",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    itemId: "ashahso", //随便编的测试id
+    itemType: "Note",
+    content: [
+      {
+        type: "paragraph",
+        children: [
+          {
+            text: "这是一个测试数据",
+          },
+        ],
       },
     ],
   },
 ];
 
-const initialValue = [
+const richTextDataSet1 = [
+  //暂不使用,仅用于表示RichText的数据结构
   {
     type: "paragraph",
     children: [
