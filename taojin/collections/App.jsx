@@ -3,7 +3,6 @@ import "./App.less";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemList from "./components/ItemList";
-import "virtual:svg-icons-register"; //引入svg
 const initialUserData = {
   userName: "taojinUser1",
   userCollections: [
