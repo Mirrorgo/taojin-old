@@ -17,6 +17,6 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.7.2",
-    "vite-plugin-svg-icons": "^2.0.0"
+    "vite-plugin-svgr": "^1.0.1"
   }
 }

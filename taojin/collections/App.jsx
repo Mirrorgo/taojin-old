@@ -3,6 +3,8 @@ import "./App.less";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemList from "./components/ItemList";
+// import { ReactComponent as Logo } from "./logo.svg";
+import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 const initialUserData = {
   userName: "taojinUser1",
   userCollections: [
@@ -47,7 +49,9 @@ export default function App() {
     <div>
       <header>
         <section className="title-bar">
-          <button className="more-collections">👈</button>
+          <button className="more-collections">
+            <ArrowLeft />
+          </button>
           <h1 className="collection-name">这是Collections的页面的东西</h1>
           <button className="add-note" onClick={addNote}>
             add Note
