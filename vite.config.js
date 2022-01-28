@@ -1,7 +1,7 @@
 const { resolve } = require("path");
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import svgrPlugin from "vite-plugin-svgr";
+import svgrPlugin from "vite-plugin-svgr"; //svg使用方法:https://www.npmjs.com/package/vite-plugin-svgr
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [

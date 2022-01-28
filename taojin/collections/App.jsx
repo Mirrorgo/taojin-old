@@ -3,7 +3,6 @@ import "./App.less";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemList from "./components/ItemList";
-// import { ReactComponent as Logo } from "./logo.svg";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 const initialUserData = {
   userName: "taojinUser1",
