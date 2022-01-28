@@ -1,9 +1,9 @@
 import React from "react";
-import "./App.css";
-import Note from "./components/Note";
+import "./App.less";
 import { useState } from "react";
 import { nanoid } from "nanoid";
-
+import ItemList from "./components/ItemList";
+import "virtual:svg-icons-register"; //引入svg
 const initialUserData = {
   userName: "taojinUser1",
   userCollections: [
@@ -46,86 +46,22 @@ export default function App() {
   };
   return (
     <div>
-      <h2 className="Group-Name">这是Collections的页面的东西</h2>
-      <h3>RichText</h3>
-      <button onClick={addNote}>点击添加Note</button>
-      <div className="item-list">
-        {items.map((item, index) => {
-          //if item type为note
-          return (
-            <Note
-              key={item.itemId}
-              content={item.content}
-              itemId={item.itemId}
-              saveItemData={saveItemData}
-            ></Note>
-          );
-        })}
-      </div>
+      <header>
+        <section className="title-bar">
+          <button className="more-collections">👈</button>
+          <h1 className="collection-name">这是Collections的页面的东西</h1>
+          <button className="add-note" onClick={addNote}>
+            add Note
+          </button>
+        </section>
+        <section className="toolbar">
+          <button className="add-current-page">Add current page</button>
+        </section>
+      </header>
+      <ItemList items={items}></ItemList>
     </div>
   );
 }
-
-const saveItemData = (itemId, itemType, newContent) => {
-  let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
-  let has = false;
-  let newItems = previousUserData.userCollections[0].items.map((item) => {
-    if (item.itemId === itemId) {
-      has = true;
-      return { ...item, content: newContent };
-    }
-    return item;
-  });
-  if (!has)
-    newItems = [
-      ...previousUserData.userCollections[0].items,
-      { itemId: itemId, itemType: itemType, content: newContent },
-    ];
-  let newUserData = {
-    userName: "taojinUser1",
-    userCollections: [
-      {
-        collectionId: "sauqhwiqiu2s",
-        items: newItems,
-        collectionName: "xxx",
-        order: 1,
-        //review:[一个类似上面content的结构,可用于RichText]
-      },
-    ],
-  };
-  localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
-};
-
-const testValue = [
-  {
-    itemId: "qwyieo", //随便编的测试id
-    itemType: "Note",
-    content: [
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "test value",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    itemId: "ashahso", //随便编的测试id
-    itemType: "Note",
-    content: [
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "这是一个测试数据",
-          },
-        ],
-      },
-    ],
-  },
-];
 
 const richTextDataSet1 = [
   //暂不使用,仅用于表示RichText的数据结构

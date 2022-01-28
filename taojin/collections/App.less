@@ -1,0 +1,31 @@
+.title-bar {
+  box-sizing: border-box;
+  height: 30px;
+  .collection-name {
+    display: inline;
+    box-sizing: border-box;
+    line-height: 1.75rem;
+    font-size: 1.125rem;
+  }
+
+  .add-note {
+    box-sizing: border-box;
+    border-width: 1px; /* 之后得去掉 */
+    border-color: white;
+    background-color: white;
+  }
+}
+
+.toolbar {
+  .add-current-page {
+    border-width: 0 0 0 0;
+    color: #549fd7;
+    &::before {
+      color: #549fd7;
+      content: "+";
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

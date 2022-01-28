@@ -10,7 +10,7 @@ import {
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 
-import "./index.css";
+import "./index.less";
 
 const SHORTCUTS = {
   "*": "list-item",
@@ -33,7 +33,6 @@ const SHORTCUTS = {
 // 各级标题再次输入同一shortcut变普通文本
 // 代码块中的内容一键复制
 // FIXME:slate中tab无效的问题(会丢失焦点)
-// FIXME:一二级标题样式相同✅
 // FIXME:此文件奇数次保存会白屏报错,根据github issue,为slate.js的问题
 // 大型组件连续保存导致vite频繁热更新会导致vscode闪退=>解决方案:降低保存频率(疑似vite的性能问题)
 
