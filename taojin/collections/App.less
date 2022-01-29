@@ -1,28 +1,46 @@
 .title-bar {
   box-sizing: border-box;
+  display: inline;
   height: 30px;
+  .more-collections {
+    border-width: 0 0 0 0;
+    border-color: white;
+    background-color: white;
+    cursor: pointer;
+  }
   .collection-name {
-    display: inline;
-    box-sizing: border-box;
     line-height: 1.75rem;
     font-size: 1.125rem;
+    font-weight: bold;
+    border-width: 0;
+    &:hover {
+      background-color: #dddddd;
+    }
   }
 
   .add-note {
     box-sizing: border-box;
-    border-width: 1px; /* 之后得去掉 */
+    border-width: 0 0 0 0;
     border-color: white;
     background-color: white;
+    cursor: pointer;
+    vertical-align: middle;
+    .add-note-icon {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 
 .toolbar {
   .add-current-page {
     border-width: 0 0 0 0;
+    background-color: white;
+    cursor: pointer;
     color: #549fd7;
     &::before {
       color: #549fd7;
-      content: "+";
+      content: " + ";
     }
     &:hover {
       text-decoration: underline;

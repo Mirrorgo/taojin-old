@@ -21,6 +21,7 @@ export default function ItemList({ items }) {
 const saveItemData = (itemId, itemType, newContent) => {
   let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
   let has = false;
+  let { collectionName } = previousUserData.userCollections[0];
   let newItems = previousUserData.userCollections[0].items.map((item) => {
     if (item.itemId === itemId) {
       has = true;
@@ -39,7 +40,7 @@ const saveItemData = (itemId, itemType, newContent) => {
       {
         collectionId: "sauqhwiqiu2s",
         items: newItems,
-        collectionName: "xxx",
+        collectionName: collectionName,
         order: 1,
         //review:[一个类似上面content的结构,可用于RichText]
       },

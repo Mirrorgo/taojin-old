@@ -4,13 +4,14 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemList from "./components/ItemList";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
+import { ReactComponent as AddNote } from "../../src/icons/add-note.svg";
 const initialUserData = {
   userName: "taojinUser1",
   userCollections: [
     {
       collectionId: "sauqhwiqiu2s",
       items: [],
-      collectionName: "xxx",
+      collectionName: "这是Collections的页面的东西",
       order: 1,
       //review:[一个类似上面content的结构,可用于RichText]
     },
@@ -21,10 +22,14 @@ export default function App() {
   if (!localStorage.getItem("taojinUserId1"))
     localStorage.setItem("taojinUserId1", JSON.stringify(initialUserData));
   const initialAppData = JSON.parse(localStorage.getItem("taojinUserId1"))
-    .userCollections[0].items; //先只弄一个collection的情况
-  const [items, setItems] = useState(initialAppData);
+    .userCollections[0]; //先只弄一个collection的情况
+  const [items, setItems] = useState(initialAppData.items);
+  const [collectionName, setCollectionName] = useState(
+    initialAppData.collectionName
+    // "这是collection的测试名称"
+  );
   const addNote = () => {
-    const newKey = nanoid();
+    const newKey = nanoid(); //生成一个随机的key
     const newItems = [
       ...items,
       {
@@ -44,6 +49,20 @@ export default function App() {
     ];
     setItems(newItems);
   };
+  const saveCollectionName = () => {
+    let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
+    let newUserData = {
+      userName: "taojinUser1",
+      userCollections: [
+        {
+          ...previousUserData.userCollections[0],
+          collectionName: collectionName,
+        },
+      ],
+    };
+    localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
+  };
+
   return (
     <div>
       <header>
@@ -51,9 +70,14 @@ export default function App() {
           <button className="more-collections">
             <ArrowLeft />
           </button>
-          <h1 className="collection-name">这是Collections的页面的东西</h1>
+          <input
+            className="collection-name"
+            value={collectionName}
+            onChange={(e) => setCollectionName(e.target.value)}
+            onBlur={saveCollectionName}
+          />
           <button className="add-note" onClick={addNote}>
-            add Note
+            <AddNote className="add-note-icon" />
           </button>
         </section>
         <section className="toolbar">
