@@ -11,6 +11,7 @@ export default function Note({ content, itemId, saveItemData }) {
         saveItemData={saveItemData}
         itemId={itemId}
       ></RichText>
+      <span>这是一个用来拖动的图标</span>
     </article>
   );
 }

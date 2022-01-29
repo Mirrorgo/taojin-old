@@ -10,7 +10,7 @@ export const initialUserData = {
     },
   ],
 };
-const initialData = {
+const initialDnDData = {
   //dnd的测试数据
   task: {
     //数据内容本体
@@ -28,9 +28,6 @@ const initialData = {
   },
   columnOrder: ["column-1"],
 };
-
-export default initialData;
-
 const richTextDataSet1 = [
   //暂不使用,仅用于表示RichText的数据结构
   {
