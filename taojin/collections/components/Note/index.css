@@ -1,6 +1,7 @@
 .note {
   box-sizing: border-box;
   background-color: hsl(47, 91%, 87%);
+  break-inside: avoid;
 }
 .note:hover {
   /* 先放这凑数,日后再调整阴影效果 */

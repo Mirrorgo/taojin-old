@@ -75,7 +75,6 @@ const saveItemData = (itemId, itemType, newContent) => {
         collectionId: "sauqhwiqiu2s",
         items: newItems,
         collectionName: collectionName,
-        order: 1,
         //review:[一个类似上面content的结构,可用于RichText]
       },
     ],

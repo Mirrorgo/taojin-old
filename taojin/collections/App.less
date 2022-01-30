@@ -1,6 +1,7 @@
-.title-bar {
+.toolbar {
+  display: flex;
+  justify-content: left;
   box-sizing: border-box;
-  display: inline;
   height: 30px;
   .more-collections {
     border-width: 0 0 0 0;
@@ -8,13 +9,17 @@
     background-color: white;
     cursor: pointer;
   }
-  .collection-name {
-    line-height: 1.75rem;
-    font-size: 1.125rem;
-    font-weight: bold;
-    border-width: 0;
+  .add-current-page {
+    border-width: 0 0 0 0;
+    background-color: white;
+    cursor: pointer;
+    color: #549fd7;
+    &::before {
+      color: #549fd7;
+      content: " + ";
+    }
     &:hover {
-      background-color: #dddddd;
+      text-decoration: underline;
     }
   }
 
@@ -30,20 +35,20 @@
       height: 20px;
     }
   }
-}
 
-.toolbar {
-  .add-current-page {
-    border-width: 0 0 0 0;
-    background-color: white;
-    cursor: pointer;
-    color: #549fd7;
-    &::before {
-      color: #549fd7;
-      content: " + ";
-    }
+  .collection-name {
+    border-width: 0;
+    width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
+    line-height: 1.75rem;
+    font-weight: bold;
+    font-size: 1.125rem;
     &:hover {
-      text-decoration: underline;
+      background-color: #dddddd;
     }
   }
+}
+.column {
+  //column-width转化成count后会自动与column-count比较,选择较小的那一个
+  column-width: 360px; //表示每一列的最佳宽度
+  column-count: 2;
 }

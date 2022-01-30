@@ -1,17 +1,42 @@
 export const initialUserData = {
+  //localStorage.getItem("taojinUserId1")
   userName: "taojinUser1",
   userCollections: [
     {
       collectionId: "sauqhwiqiu2s",
       items: [],
       collectionName: "这是Collections的页面的东西",
-      order: 1,
-      //review:[一个类似上面content的结构,可用于RichText]
+      //?review:[一个类似上面content的结构,可用于RichText]
+    },
+  ],
+};
+//STAR:这个就是目前的数据结构👇
+let dataStructureOfTaojinUserId1 = {
+  //localStorage.getItem("taojinUserId1")
+  userName: "taojinUser1",
+  userCollections: [
+    {
+      collectionId: "sauqhwiqiu2s", //目前就是这串数字,其他的会用nanoid生成
+      items: [
+        //默认为空items
+        { itemId: "1asaqw", itemType: "note", content: [] },
+        {
+          itemId: "2ertsasa",
+          itemType: "site",
+          content: { url: "", name: "" },
+        },
+      ],
+      collectionName: "这是Collections的页面的东西",
+    },
+    {
+      id: "collectionId2", //目前没有第二个collection,如果有会用nanoid生成
+      items: [],
+      collectionName: "xxx",
     },
   ],
 };
 const initialDnDData = {
-  //dnd的测试数据
+  //dnd的测试数据,不要删除,仅作展示
   task: {
     //数据内容本体
     "task-1": { id: "task-1", content: "'task1's content" },
