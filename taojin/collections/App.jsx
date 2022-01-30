@@ -81,7 +81,6 @@ export default function App() {
 
   const onDragEnd = (result) => {
     //拖动结束后的处理函数
-    //TODO:修改localStorage以持久化
     if (!result.destination) {
       return;
     }
