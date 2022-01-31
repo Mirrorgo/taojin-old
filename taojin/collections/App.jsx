@@ -116,6 +116,7 @@ export default function App() {
       <section className="column">
         <ItemList items={items}></ItemList>
       </section>
+      {/* <RTTest4></RTTest4> */}
     </DragDropContext>
   );
 }

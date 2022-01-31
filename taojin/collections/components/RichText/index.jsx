@@ -7,8 +7,18 @@ import {
   createEditor,
   Element as SlateElement,
 } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import {
+  Slate,
+  Editable,
+  withReact,
+  useSlateStatic,
+  ReactEditor,
+  useSelected,
+  useFocused,
+} from "slate-react";
 import { withHistory } from "slate-history";
+
+import isUrl from "is-url";
 
 import "./index.less";
 
@@ -47,7 +57,7 @@ export default function RichText({ content, saveItemData, itemId }) {
   const renderElement = useCallback((props) => <Element {...props} />, []);
   // 创建一个不会在渲染中变化的 Slate 编辑器对象
   const editor = useMemo(
-    () => withShortcuts(withReact(withHistory(createEditor()))),
+    () => withImages(withShortcuts(withReact(withHistory(createEditor())))),
     []
   ); //useMemo传入空数组代表仅计算一次 memoized 的值,也就是初始化的时候
   return (
@@ -62,12 +72,60 @@ export default function RichText({ content, saveItemData, itemId }) {
         className="slate"
         renderElement={renderElement}
         placeholder="这里可以写markdown"
-        autoFocus //?
         onBlur={saveItemData(itemId, "Note", value)}
       />
     </Slate>
   );
 }
+/* const withImages = (editor) => {
+  const { isVoid } = editor;
+  editor.isVoid = (element) => {
+    return element.type === "image" ? true : isVoid(element);
+  };
+  return editor;
+}; */
+
+const withImages = (editor) => {
+  const { insertData, isVoid } = editor;
+
+  editor.isVoid = (element) => {
+    return element.type === "image" ? true : isVoid(element);
+  };
+
+  editor.insertData = (data) => {
+    const text = data.getData("text/plain");
+    const { files } = data;
+
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const reader = new FileReader();
+        const [mime] = file.type.split("/");
+
+        if (mime === "image") {
+          reader.addEventListener("load", () => {
+            const url = reader.result;
+            insertImage(editor, url);
+          });
+
+          reader.readAsDataURL(file);
+        }
+      }
+    } else if (isImageUrl(text)) {
+      insertImage(editor, text);
+    } else {
+      insertData(data);
+    }
+  };
+
+  return editor;
+};
+
+const insertImage = (editor, url) => {
+  const text = { text: "" };
+  const image = { type: "image", url, children: [text] };
+  Transforms.insertNodes(editor, image);
+};
+
 const withShortcuts = (editor) => {
   const { deleteBackward, insertText } = editor;
   editor.insertText = (text) => {
@@ -162,7 +220,8 @@ const withShortcuts = (editor) => {
 //语雀方案:
 //1.2.3.4级字体逐级减小,4级为16px(加粗);5级为15px(加粗);6级为15px(不加粗),与正文相同
 //So,参考语雀方案改动,123456逐级减小,均加粗,其余内容默认字号与6级字体相同
-const Element = ({ attributes, children, element }) => {
+const Element = (props) => {
+  const { attributes, children, element } = props;
   switch (element.type) {
     case "block-quote":
       return (
@@ -291,6 +350,8 @@ const Element = ({ attributes, children, element }) => {
           {children}
         </li>
       );
+    case "image":
+      return <Image {...props} />;
     default:
       return (
         <p
@@ -308,37 +369,28 @@ const Element = ({ attributes, children, element }) => {
   }
 };
 
-// const initialValue = [
-//   {
-//     type: "paragraph",
-//     children: [
-//       {
-//         text: 'The editor gives you full control over the logic you can add. For example, it\'s fairly common to want to add markdown-like shortcuts to editors. So that, when you start a line with "> " you get a blockquote that looks like this:',
-//       },
-//     ],
-//   },
-//   {
-//     type: "block-quote",
-//     children: [{ text: "A wise quote." }],
-//   },
-//   {
-//     type: "paragraph",
-//     children: [
-//       {
-//         text: 'Order when you start a line with "## " you get a level-two heading, like this:',
-//       },
-//     ],
-//   },
-//   {
-//     type: "heading-two",
-//     children: [{ text: "Try it out!" }],
-//   },
-//   {
-//     type: "paragraph",
-//     children: [
-//       {
-//         text: 'Try it out for yourself! Try starting a new line with ">", "-", or "#"s.',
-//       },
-//     ],
-//   },
-// ];
+const Image = ({ attributes, children, element }) => {
+  const editor = useSlateStatic();
+  const path = ReactEditor.findPath(editor, element);
+
+  const selected = useSelected();
+  const focused = useFocused();
+  return (
+    <div {...attributes}>
+      {children}
+      <div contentEditable={false}>
+        <img
+          className={`${selected && focused ? "selectedImage" : "Image"}`}
+          src={element.url}
+        />
+      </div>
+    </div>
+  );
+};
+
+const isImageUrl = (url) => {
+  if (!url) return false;
+  if (!isUrl(url)) return false;
+  const ext = new URL(url).pathname.split(".").pop();
+  return imageExtensions.includes(ext);
+};

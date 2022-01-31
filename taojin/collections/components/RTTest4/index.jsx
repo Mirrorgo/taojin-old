@@ -16,7 +16,8 @@ import { css } from "@emotion/css";
 
 import { Button, Icon, Toolbar } from "../components";
 
-const ImagesExample = () => {
+export default function RTTest4() {
+  //图片部分的demo
   const [value, setValue] = useState(initialValue);
   const editor = useMemo(
     () => withImages(withHistory(withReact(createEditor()))),
@@ -34,7 +35,7 @@ const ImagesExample = () => {
       />
     </Slate>
   );
-};
+}
 
 const withImages = (editor) => {
   const { insertData, isVoid } = editor;
@@ -192,5 +193,3 @@ const initialValue = [
     children: [{ text: "" }],
   },
 ];
-
-export default ImagesExample;
