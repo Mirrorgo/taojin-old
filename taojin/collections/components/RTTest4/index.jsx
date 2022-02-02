@@ -14,7 +14,7 @@ import {
 import { withHistory } from "slate-history";
 import { css } from "@emotion/css";
 
-import { Button, Icon, Toolbar } from "../components";
+import { Button, Icon, Toolbar } from "./components";
 
 export default function RTTest4() {
   //图片部分的demo
