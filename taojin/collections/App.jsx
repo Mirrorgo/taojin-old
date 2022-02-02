@@ -6,7 +6,6 @@ import ItemList from "./components/ItemList";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 import { ReactComponent as AddNote } from "../../src/icons/add-note.svg";
 import { initialUserData } from "./initial-data";
-import { DragDropContext } from "react-beautiful-dnd";
 
 export default function App() {
   //没有缓存的情况下,对浏览器内数据初始化
@@ -97,7 +96,7 @@ export default function App() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <div>
       <section className="toolbar">
         <button className="more-collections">
           <ArrowLeft />
@@ -116,7 +115,6 @@ export default function App() {
       <section className="column">
         <ItemList items={items}></ItemList>
       </section>
-      {/* <RTTest4></RTTest4> */}
-    </DragDropContext>
+    </div>
   );
 }
