@@ -35,7 +35,6 @@ const saveItemData = (itemId, itemType, newContent) => {
         collectionId: "sauqhwiqiu2s",
         items: newItems,
         collectionName: collectionName,
-        //review:[一个类似上面content的结构,可用于RichText]
       },
     ],
   };

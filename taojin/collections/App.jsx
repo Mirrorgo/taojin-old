@@ -6,6 +6,20 @@ import ItemList from "./components/ItemList";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 import { ReactComponent as AddNote } from "../../src/icons/add-note.svg";
 import { initialUserData } from "./initial-data";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove, //官方提供的reorder函数,暂未使用
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 export default function App() {
   //没有缓存的情况下,对浏览器内数据初始化
@@ -53,8 +67,8 @@ export default function App() {
     };
     localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
   };
-
-  // a little function to help us with reordering the result
+  // 👇内容为原beautiful-dnd的onDragEnd函数,dnd-kit官方有提供,但后续可以自己尝试官方的写法
+  /* // a little function to help us with reordering the result
   const reorder = (list, startIndex, endIndex) => {
     //参考👉 https://codesandbox.io/s/k260nyxq9v?file=/index.js
     const result = Array.from(list);
@@ -93,10 +107,54 @@ export default function App() {
       //持久化reorder的结果
       reorderedItems
     );
+  }; */
+  const saveReorderedItems = (reorderedItems) => {
+    //持久化reorder的结果
+    let newUserData = {
+      userName: "taojinUser1",
+      userCollections: [
+        {
+          collectionId: "sauqhwiqiu2s",
+          items: reorderedItems,
+          collectionName: collectionName,
+        },
+      ],
+    };
+    localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
   };
 
+  const reorder = (list, startIndex, endIndex) => {
+    //参考👉 https://codesandbox.io/s/k260nyxq9v?file=/index.js
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1); //sourceIndex的内容移除并且将移除的内容放入removed
+    result.splice(endIndex, 0, removed); //把removed插入destinationIndex处
+    return result;
+  };
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event; //active:被拖动的元素,over:在active下方的元素
+    if (active.id !== over.id) {
+      const oldIndex = items.findIndex((i) => i.itemId === active.id);
+      const newIndex = items.findIndex((i) => i.itemId === over.id);
+      const reorderedItems = reorder(items, oldIndex, newIndex);
+      setItems(reorderedItems);
+      saveReorderedItems(reorderedItems);
+    }
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   return (
-    <div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <section className="toolbar">
         <button className="more-collections">
           <ArrowLeft />
@@ -112,9 +170,14 @@ export default function App() {
           <AddNote className="add-note-icon" />
         </button>
       </section>
-      <section className="column">
-        <ItemList items={items}></ItemList>
-      </section>
-    </div>
+      <article className="column">
+        <SortableContext
+          items={items.map((i) => i.itemId)} //感谢👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
+          strategy={verticalListSortingStrategy}
+        >
+          <ItemList items={items}></ItemList>
+        </SortableContext>
+      </article>
+    </DndContext>
   );
 }
