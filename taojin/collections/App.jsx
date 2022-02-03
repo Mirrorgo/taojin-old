@@ -1,4 +1,5 @@
 import React from "react";
+import html2canvas from "html2canvas";
 import "./App.less";
 import { useState } from "react";
 import { nanoid } from "nanoid";
@@ -96,6 +97,35 @@ export default function App() {
     );
   };
 
+  const addSite = () => {
+    const newKey = nanoid(); //生成一个随机的key
+    let content = {};
+    content.siteTitle = document.title
+    content.siteOrigin = location.origin
+    content.hostName = location.hostname
+    let scroll_top = 0;  // 获取滚动高度
+    if (document.documentElement && document.documentElement.scrollTop) {
+      scroll_top = document.documentElement.scrollTop;
+    }
+    else if (document.body) {
+      scroll_top = document.body.scrollTop;
+    }
+    //  截图当前网页窗口
+    html2canvas(
+      document.querySelector("body"),
+      {
+        y: scroll_top,
+        width: window.innerWidth,
+        height: window.innerHeight
+      }).then(canvas => {
+      content.siteImg = canvas.toDataURL("image/png", 0.2)
+      // let imgElement = document.createElement('img')
+      // imgElement.src = canvas.toDataURL("image/png", 0.5);  // 将网页转成base64字符编码，0.5为图片质量
+      // document.body.appendChild(imgElement)   // 我直接插个dom看效果
+    });
+    console.log(content)
+  }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <section className="toolbar">
@@ -108,7 +138,7 @@ export default function App() {
           onChange={(e) => setCollectionName(e.target.value)}
           onBlur={saveCollectionName}
         />
-        <button className="add-current-page">Add current page</button>
+        <button className="add-current-page" onClick={addSite}>Add current page</button>
         <button className="add-note" onClick={addNote}>
           <AddNote className="add-note-icon" />
         </button>
