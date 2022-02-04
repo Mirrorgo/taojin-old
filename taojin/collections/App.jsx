@@ -13,6 +13,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  MeasuringStrategy,
 } from "@dnd-kit/core";
 import {
   arrayMove, //官方提供的reorder函数,暂未使用
@@ -124,7 +125,6 @@ export default function App() {
   };
 
   const reorder = (list, startIndex, endIndex) => {
-    //参考👉 https://codesandbox.io/s/k260nyxq9v?file=/index.js
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1); //sourceIndex的内容移除并且将移除的内容放入removed
     result.splice(endIndex, 0, removed); //把removed插入destinationIndex处
@@ -149,11 +149,18 @@ export default function App() {
     })
   );
 
+  // const measuringConfig = {
+  //   droppable: {
+  //     strategy: MeasuringStrategy.Always,
+  //   },
+  // };
+
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      // measuring={measuringConfig}
     >
       <section className="toolbar">
         <button className="more-collections">
@@ -172,7 +179,7 @@ export default function App() {
       </section>
       <article className="column">
         <SortableContext
-          items={items.map((i) => i.itemId)} //感谢👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
+          items={items.map((i) => i.itemId)} //参考了👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
           strategy={verticalListSortingStrategy}
         >
           <ItemList items={items}></ItemList>
