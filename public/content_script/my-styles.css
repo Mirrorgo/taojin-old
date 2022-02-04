@@ -1,9 +1,13 @@
-#taojin-searchbar {
-  position: fixed;
-  left: 10px;
-  top: 150px;
-  width: 200px;
-  height: 300px;
+.taojin-searchbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: 0;
+  z-index: 2147483647;
+}
+.search-content {
+  z-index: 2147483647;
   resize: both;
-  z-index: 99;
 }
