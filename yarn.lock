@@ -203,7 +203,7 @@
     "@babel/plugin-syntax-jsx" "^7.16.7"
     "@babel/types" "^7.16.7"
 
-"@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.7.2", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.13.10", "@babel/runtime@^7.7.2":
   "integrity" "sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ=="
   "resolved" "https://registry.npmmirror.com/@babel/runtime/download/@babel/runtime-7.16.7.tgz"
   "version" "7.16.7"
@@ -242,6 +242,45 @@
   dependencies:
     "@babel/helper-validator-identifier" "^7.16.7"
     "to-fast-properties" "^2.0.0"
+
+"@dnd-kit/accessibility@^3.0.0":
+  "integrity" "sha512-QwaQ1IJHQHMMuAGOOYHQSx7h7vMZPfO97aDts8t5N/MY7n2QTDSnW+kF7uRQ1tVBkr6vJ+BqHWG5dlgGvwVjow=="
+  "resolved" "https://registry.npmmirror.com/@dnd-kit/accessibility/-/accessibility-3.0.0.tgz"
+  "version" "3.0.0"
+  dependencies:
+    "tslib" "^2.0.0"
+
+"@dnd-kit/core@^5.0.0", "@dnd-kit/core@^5.0.1":
+  "integrity" "sha512-h02GyHb2KqbpqbELA9QW5WVLdnAQODgZs8Nv15PTg/VpEpQxEkLPn0QHqiMSSOOFBx0qJOowwYh6ggfL1ZIJPQ=="
+  "resolved" "https://registry.npmmirror.com/@dnd-kit/core/-/core-5.0.1.tgz"
+  "version" "5.0.1"
+  dependencies:
+    "@dnd-kit/accessibility" "^3.0.0"
+    "@dnd-kit/utilities" "^3.1.0"
+    "tslib" "^2.0.0"
+
+"@dnd-kit/modifiers@^5.0.0":
+  "integrity" "sha512-ZVOfa5dKmvAPBxjjnI4QTm8fHV4/gMdS6k0zY5Z8p/p9HkL/3QEHn2fYgqM2zVDpxf5maqrZ4MvqXILSPNQPMQ=="
+  "resolved" "https://registry.npmmirror.com/@dnd-kit/modifiers/-/modifiers-5.0.0.tgz"
+  "version" "5.0.0"
+  dependencies:
+    "@dnd-kit/utilities" "^3.1.0"
+    "tslib" "^2.0.0"
+
+"@dnd-kit/sortable@^6.0.0":
+  "integrity" "sha512-Kf0HO/rbFpd7HxXGEvxXtxBgPI6+IQuxRXDdFz6XKLhylxuDMEomi1netrhS+253KrOZ68V+sjqOmfE2RreLeQ=="
+  "resolved" "https://registry.npmmirror.com/@dnd-kit/sortable/-/sortable-6.0.0.tgz"
+  "version" "6.0.0"
+  dependencies:
+    "@dnd-kit/utilities" "^3.1.0"
+    "tslib" "^2.0.0"
+
+"@dnd-kit/utilities@^3.1.0":
+  "integrity" "sha512-2JBdIgjJ7xjMRpKagdMuYKWJdDoVVw9Wc6lfMrLjrq8t4QlMEjtsab5JVUlzWvHgANn7w3Y3VhalFfbp4dQrKg=="
+  "resolved" "https://registry.npmmirror.com/@dnd-kit/utilities/-/utilities-3.1.0.tgz"
+  "version" "3.1.0"
+  dependencies:
+    "tslib" "^2.0.0"
 
 "@emotion/babel-plugin@^11.7.1":
   "integrity" "sha512-6mGSCWi9UzXut/ZAN6lGFu33wGR3SJisNl3c0tvlmb8XChH1b2SUvxvnOh7hvLpqyRdHHU9AiazV3Cwbk5SXKQ=="
@@ -413,14 +452,6 @@
     "@svgr/hast-util-to-babel-ast" "^6.0.0"
     "svg-parser" "^2.0.2"
 
-"@types/hoist-non-react-statics@^3.3.0":
-  "integrity" "sha1-ESSq/lEYy1kZd66xzqrtEHDrA58="
-  "resolved" "https://registry.npmmirror.com/@types/hoist-non-react-statics/download/@types/hoist-non-react-statics-3.3.1.tgz?cache=0&sync_timestamp=1637266809459&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fhoist-non-react-statics%2Fdownload%2F%40types%2Fhoist-non-react-statics-3.3.1.tgz"
-  "version" "3.3.1"
-  dependencies:
-    "@types/react" "*"
-    "hoist-non-react-statics" "^3.3.0"
-
 "@types/is-hotkey@^0.1.1":
   "integrity" "sha512-yB5C7zcOM7idwYZZ1wKQ3pTfjA9BbvFqRWvKB46GFddxnJtHwi/b9y84ykQtxQPg5qhdpg4Q/kWU3EGoCTmLzQ=="
   "resolved" "https://registry.npmmirror.com/@types/is-hotkey/download/@types/is-hotkey-0.1.7.tgz"
@@ -435,35 +466,6 @@
   "integrity" "sha1-L4u0QUNNFjs1+4/9zNcTiSf/uMA="
   "resolved" "https://registry.npmmirror.com/@types/parse-json/download/@types/parse-json-4.0.0.tgz?cache=0&sync_timestamp=1637269948744&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fparse-json%2Fdownload%2F%40types%2Fparse-json-4.0.0.tgz"
   "version" "4.0.0"
-
-"@types/prop-types@*":
-  "integrity" "sha1-/PcgXCXf95Xuea8eMNosl5CAjxE="
-  "resolved" "https://registry.npmmirror.com/@types/prop-types/download/@types/prop-types-15.7.4.tgz?cache=0&sync_timestamp=1637270164807&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.4.tgz"
-  "version" "15.7.4"
-
-"@types/react-redux@^7.1.20":
-  "integrity" "sha512-GxIA1kM7ClU73I6wg9IRTVwSO9GS+SAKZKe0Enj+82HMU6aoESFU2HNAdNi3+J53IaOHPiUfT3kSG4L828joDQ=="
-  "resolved" "https://registry.npmmirror.com/@types/react-redux/download/@types/react-redux-7.1.22.tgz"
-  "version" "7.1.22"
-  dependencies:
-    "@types/hoist-non-react-statics" "^3.3.0"
-    "@types/react" "*"
-    "hoist-non-react-statics" "^3.3.0"
-    "redux" "^4.0.0"
-
-"@types/react@*":
-  "integrity" "sha512-SI92X1IA+FMnP3qM5m4QReluXzhcmovhZnLNm3pyeQlooi02qI7sLiepEYqT678uNiyc25XfCqxREFpy3W7YhQ=="
-  "resolved" "https://registry.npmmirror.com/@types/react/download/@types/react-17.0.38.tgz"
-  "version" "17.0.38"
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    "csstype" "^3.0.2"
-
-"@types/scheduler@*":
-  "integrity" "sha1-GmL4lSVyPd4kuhsBsJK/XfitTTk="
-  "resolved" "https://registry.npmmirror.com/@types/scheduler/download/@types/scheduler-0.16.2.tgz?cache=0&sync_timestamp=1637270322974&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fscheduler%2Fdownload%2F%40types%2Fscheduler-0.16.2.tgz"
-  "version" "0.16.2"
 
 "@vitejs/plugin-react@^1.0.7":
   "integrity" "sha512-cMUBDonNY8PPeHWjIrYKbRn6bLSunh/Ixo2XLLBd3DM0uYBZft+c+04zkGhhN1lAwvoRKJ2FdtvhGhPgViHc6w=="
@@ -580,13 +582,6 @@
     "parse-json" "^5.0.0"
     "path-type" "^4.0.0"
     "yaml" "^1.10.0"
-
-"css-box-model@^1.2.0":
-  "integrity" "sha1-WZUdO4H9ayB0pi1JREQVsNK018E="
-  "resolved" "https://registry.npm.taobao.org/css-box-model/download/css-box-model-1.2.1.tgz"
-  "version" "1.2.1"
-  dependencies:
-    "tiny-invariant" "^1.0.6"
 
 "css-line-break@^2.1.0":
   "integrity" "sha512-FHcKFCZcAha3LwfVBhCQbW2nCNbkZXn7KVUJcsT5/P8YmfsVja0FMPJr0B903j/E69HUphKiV9iQArX8SDYA4w=="
@@ -709,13 +704,6 @@
   dependencies:
     "function-bind" "^1.1.1"
 
-"hoist-non-react-statics@^3.3.0", "hoist-non-react-statics@^3.3.2":
-  "integrity" "sha1-7OCsr3HWLClpwuxZ/v9CpLGoW0U="
-  "resolved" "https://registry.nlark.com/hoist-non-react-statics/download/hoist-non-react-statics-3.3.2.tgz"
-  "version" "3.3.2"
-  dependencies:
-    "react-is" "^16.7.0"
-
 "html2canvas@^1.4.1":
   "integrity" "sha512-fPU6BHNpsyIhr8yyMpTLLxAbkaK8ArIBcmZIRiBLiDhjeqvXolaEmDGmELFuX9I4xDcaKKcJl+TKZLqruBbmWA=="
   "resolved" "https://registry.npmmirror.com/html2canvas/-/html2canvas-1.4.1.tgz"
@@ -801,17 +789,12 @@
   "resolved" "https://registry.npmmirror.com/lodash/download/lodash-4.17.21.tgz"
   "version" "4.17.21"
 
-"loose-envify@^1.1.0", "loose-envify@^1.4.0":
+"loose-envify@^1.1.0":
   "integrity" "sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8="
   "resolved" "https://registry.nlark.com/loose-envify/download/loose-envify-1.4.0.tgz"
   "version" "1.4.0"
   dependencies:
     "js-tokens" "^3.0.0 || ^4.0.0"
-
-"memoize-one@^5.1.1":
-  "integrity" "sha1-gzeqPEM1WBg57AHD1ZQJDOvo8A4="
-  "resolved" "https://registry.npmmirror.com/memoize-one/download/memoize-one-5.2.1.tgz"
-  "version" "5.2.1"
 
 "minimist@^1.2.5":
   "integrity" "sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI="
@@ -884,34 +867,7 @@
     "picocolors" "^1.0.0"
     "source-map-js" "^1.0.1"
 
-"prop-types@^15.7.2":
-  "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
-  "resolved" "https://registry.npmmirror.com/prop-types/download/prop-types-15.8.1.tgz"
-  "version" "15.8.1"
-  dependencies:
-    "loose-envify" "^1.4.0"
-    "object-assign" "^4.1.1"
-    "react-is" "^16.13.1"
-
-"raf-schd@^4.0.2":
-  "integrity" "sha1-XWw070b4sqDogKj823Q+/Fv9vBo="
-  "resolved" "https://registry.npm.taobao.org/raf-schd/download/raf-schd-4.0.3.tgz"
-  "version" "4.0.3"
-
-"react-beautiful-dnd@^13.1.0":
-  "integrity" "sha1-7JfIEJNZNSZFSw3mmFKuQzeDhE0="
-  "resolved" "https://registry.npm.taobao.org/react-beautiful-dnd/download/react-beautiful-dnd-13.1.0.tgz"
-  "version" "13.1.0"
-  dependencies:
-    "@babel/runtime" "^7.9.2"
-    "css-box-model" "^1.2.0"
-    "memoize-one" "^5.1.1"
-    "raf-schd" "^4.0.2"
-    "react-redux" "^7.2.0"
-    "redux" "^4.0.4"
-    "use-memo-one" "^1.1.1"
-
-"react-dom@^16.8.5 || ^17.0.0", "react-dom@^17.0.2", "react-dom@>=16.8.0":
+"react-dom@^17.0.2", "react-dom@>=16.8.0":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmmirror.com/react-dom/download/react-dom-17.0.2.tgz"
   "version" "17.0.2"
@@ -920,52 +876,18 @@
     "object-assign" "^4.1.1"
     "scheduler" "^0.20.2"
 
-"react-is@^16.13.1":
-  "integrity" "sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ="
-  "resolved" "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz"
-  "version" "16.13.1"
-
-"react-is@^16.7.0":
-  "integrity" "sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ="
-  "resolved" "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz"
-  "version" "16.13.1"
-
-"react-is@^17.0.2":
-  "integrity" "sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA="
-  "resolved" "https://registry.npmmirror.com/react-is/download/react-is-17.0.2.tgz"
-  "version" "17.0.2"
-
-"react-redux@^7.2.0":
-  "integrity" "sha512-10RPdsz0UUrRL1NZE0ejTkucnclYSgXp5q+tB5SWx2qeG2ZJQJyymgAhwKy73yiL/13btfB6fPr+rgbMAaZIAQ=="
-  "resolved" "https://registry.npmmirror.com/react-redux/download/react-redux-7.2.6.tgz"
-  "version" "7.2.6"
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    "@types/react-redux" "^7.1.20"
-    "hoist-non-react-statics" "^3.3.2"
-    "loose-envify" "^1.4.0"
-    "prop-types" "^15.7.2"
-    "react-is" "^17.0.2"
-
 "react-refresh@^0.11.0":
   "integrity" "sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A=="
   "resolved" "https://registry.npmmirror.com/react-refresh/download/react-refresh-0.11.0.tgz"
   "version" "0.11.0"
 
-"react@^16.8.0 || ^17.0.0", "react@^16.8.3 || ^17", "react@^16.8.5 || ^17.0.0", "react@^17.0.2", "react@>=16.8.0", "react@17.0.2":
+"react@^17.0.2", "react@>=16.8.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmmirror.com/react/download/react-17.0.2.tgz"
   "version" "17.0.2"
   dependencies:
     "loose-envify" "^1.1.0"
     "object-assign" "^4.1.1"
-
-"redux@^4.0.0", "redux@^4.0.4":
-  "integrity" "sha512-SH8PglcebESbd/shgf6mii6EIoRM0zrQyjcuQ+ojmfxjTtE0z9Y8pa62iA/OJ58qjP6j27uyW4kUF4jl/jd6sw=="
-  "resolved" "https://registry.npmmirror.com/redux/download/redux-4.1.2.tgz"
-  "version" "4.1.2"
-  dependencies:
-    "@babel/runtime" "^7.9.2"
 
 "regenerator-runtime@^0.13.4":
   "integrity" "sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA=="
@@ -1087,7 +1009,7 @@
   dependencies:
     "utrie" "^1.0.2"
 
-"tiny-invariant@^1.0.6", "tiny-invariant@1.0.6":
+"tiny-invariant@1.0.6":
   "integrity" "sha1-s/mziDXjakHIQ6OwkHpaezdV3nM="
   "resolved" "https://registry.npmmirror.com/tiny-invariant/download/tiny-invariant-1.0.6.tgz"
   "version" "1.0.6"
@@ -1102,10 +1024,10 @@
   "resolved" "https://registry.nlark.com/to-fast-properties/download/to-fast-properties-2.0.0.tgz"
   "version" "2.0.0"
 
-"use-memo-one@^1.1.1":
-  "integrity" "sha1-DIIDoyn3bgQAR6NaEZfe/jQvqyA="
-  "resolved" "https://registry.npm.taobao.org/use-memo-one/download/use-memo-one-1.1.2.tgz"
-  "version" "1.1.2"
+"tslib@^2.0.0":
+  "integrity" "sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw=="
+  "resolved" "https://registry.npmmirror.com/tslib/-/tslib-2.3.1.tgz"
+  "version" "2.3.1"
 
 "utrie@^1.0.2":
   "integrity" "sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw=="
