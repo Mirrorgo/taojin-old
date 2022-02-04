@@ -37,7 +37,6 @@ function App() {
     }
   }
   function addSearchBar(e) {
-    console.log(e);
     if ('q' === e.key && e.ctrlKey) {
       setShowSearchBar(pre => !pre);
     }
