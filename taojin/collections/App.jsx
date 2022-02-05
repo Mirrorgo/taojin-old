@@ -7,7 +7,6 @@ import ItemList from "./components/ItemList";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 import { ReactComponent as AddNote } from "../../src/icons/add-note.svg";
 import { initialUserData } from "./initial-data";
-import ContextMenu from "./components/ContextMenu";
 
 import {
   DndContext,
@@ -43,7 +42,7 @@ export default function App() {
       ...items,
       {
         itemId: newKey,
-        itemType: "Note",
+        itemType: "note",
         content: [
           {
             type: "paragraph",
@@ -193,7 +192,6 @@ export default function App() {
       <section className="toolbar">
         <button className="more-collections">
           <ArrowLeft />
-          <ContextMenu menu={<CustomMenu />} />
         </button>
         <input
           className="collection-name"
@@ -220,10 +218,3 @@ export default function App() {
     </DndContext>
   );
 }
-const CustomMenu = () => (
-  <ul className="menu">
-    <li>Login</li>
-    <li>Register</li>
-    <li>Open Profile</li>
-  </ul>
-);

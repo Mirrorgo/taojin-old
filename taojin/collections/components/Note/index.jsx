@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import RichText from "../RichText";
 import "./index.css";
+// ContextMenu组件暂未完成.先留在本地
+// import ContextMenu from "../ContextMenu";
 
 import { useSortable, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -46,26 +48,38 @@ export default function Note({ content, itemId, saveItemData }) {
     // cursor: `${isOver ? "cell" : ""}`,
     // cursor: `${isOver ? "text" : "cell"}`,
   };
+  const noteRef = useRef(null);
   return (
     <article className="note" ref={setNodeRef} style={style}>
-      {/* https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/article */}
-      <RichText
-        content={content}
-        saveItemData={saveItemData}
-        itemId={itemId}
-      ></RichText>
-      <span
-        {...attributes}
-        {...listeners}
-        style={{
-          // FIXME:cursor在isOver,isSorting和isDragging下都未生效
-          // cursor: `${isOver ? "grab" : "cell"}`,
-          cursor: "grab",
-        }}
-      >
-        这是一个用来拖动的图标
-      </span>
-      {/* TODO:将👆span去掉,让RichText在单击之后才会进入编辑界面,否则可以直接拖动 */}
+      {/* 仅仅是用来获取ref给自定义的右键菜单 */}
+      <div ref={noteRef}>
+        <RichText
+          content={content}
+          saveItemData={saveItemData}
+          itemId={itemId}
+        ></RichText>
+        <span
+          {...attributes}
+          {...listeners}
+          style={{
+            // FIXME:cursor在isOver,isSorting和isDragging下都未生效
+            // cursor: `${isOver ? "grab" : "cell"}`,
+            cursor: "grab",
+          }}
+        >
+          这是一个用来拖动的图标
+        </span>
+        {/* TODO:将👆span去掉,让RichText在单击之后才会进入编辑界面,否则可以直接拖动 */}
+      </div>
+      {/* <ContextMenu menu={<CustomMenu />} targetRef={noteRef} /> */}
     </article>
   );
 }
+
+const CustomMenu = () => (
+  <ul className="menu">
+    <li>Login</li>
+    <li>Register</li>
+    <li>Open Profile</li>
+  </ul>
+);
