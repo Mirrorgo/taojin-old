@@ -1,6 +1,6 @@
-chrome.action.onClicked.addListener((tab) => {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    files: ["./content_script/content-script.js"],
-  });
-});
+// chrome.action.onClicked.addListener((tab) => {
+//   chrome.scripting.executeScript({
+//     target: { tabId: tab.id },
+//     files: ["./content_script/content-script.js"],
+//   });
+// });

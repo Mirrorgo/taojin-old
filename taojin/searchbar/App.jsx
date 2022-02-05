@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import SearchContent from "./components/SearchContent";
 
+
 function App() {
   const [searchValue, setSearchValue] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -34,14 +35,12 @@ function App() {
     }
   }
   function addSearchBar(e) {
-    console.log(e);
     if ('q' === e.key && e.ctrlKey) {
       setShowSearchBar(pre => !pre);
     }
   }
   return (
     <>
-      <div onClick={addSearchBar} style={{pointerEvents: "auto"}}>123</div>
       {!showSearchBar || <div id="search-bar" className="absolute text-2xl p-2 border-2 top-1/3 left-1/2 bg-white">
         <input ref={inputEl} className="focus:outline-none" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder="搜索网页" onKeyUp={search}></input>
       </div>}

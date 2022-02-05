@@ -1,4 +1,4 @@
-.taojin-searchbar {
+/* .taojin-searchbar {
   position: absolute;
   top: 0;
   left: 0;
@@ -7,7 +7,15 @@
   border: 0;
   z-index: 2147483647;
   pointer-events:none;
+} */
+
+.taojin-searchbar {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  z-index: 2147483647;
 }
+
 .search-content {
   z-index: 2147483647;
   resize: both;
