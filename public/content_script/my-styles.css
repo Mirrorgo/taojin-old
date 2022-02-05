@@ -6,6 +6,7 @@
   width: 100%;
   border: 0;
   z-index: 2147483647;
+  pointer-events:none;
 }
 .search-content {
   z-index: 2147483647;
