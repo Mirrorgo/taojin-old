@@ -72,7 +72,7 @@ export default function RichText({ content, saveItemData, itemId }) {
         className="slate"
         renderElement={renderElement}
         placeholder="这里可以写markdown"
-        onBlur={saveItemData(itemId, "Note", value)}
+        onBlur={saveItemData(itemId, "note", value)}
       />
     </Slate>
   );

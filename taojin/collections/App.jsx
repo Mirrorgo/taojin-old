@@ -7,6 +7,7 @@ import ItemList from "./components/ItemList";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 import { ReactComponent as AddNote } from "../../src/icons/add-note.svg";
 import { initialUserData } from "./initial-data";
+
 import {
   DndContext,
   closestCenter,
@@ -41,7 +42,7 @@ export default function App() {
       ...items,
       {
         itemId: newKey,
-        itemType: "Note",
+        itemType: "note",
         content: [
           {
             type: "paragraph",
@@ -64,6 +65,24 @@ export default function App() {
         {
           ...previousUserData.userCollections[0],
           collectionName: collectionName,
+        },
+      ],
+    };
+    localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
+  };
+
+  const deleteItem = (itemId) => {
+    let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
+    let newItems = previousUserData.userCollections[0].items.filter(
+      (item) => item.itemId !== itemId
+    );
+    setItems(newItems);
+    let newUserData = {
+      ...previousUserData,
+      userCollections: [
+        {
+          ...previousUserData.userCollections[0],
+          items: newItems,
         },
       ],
     };
@@ -203,6 +222,7 @@ export default function App() {
         </button>
         <button className="add-note" onClick={addNote}>
           <AddNote className="add-note-icon" />
+          {/* <ContextMenu menu={<CustomMenu />} /> */}
         </button>
       </section>
       <article className="column">
@@ -210,7 +230,7 @@ export default function App() {
           items={items.map((i) => i.itemId)} //参考了👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
           strategy={verticalListSortingStrategy}
         >
-          <ItemList items={items}></ItemList>
+          <ItemList items={items} deleteItem={deleteItem}></ItemList>
         </SortableContext>
       </article>
     </DndContext>

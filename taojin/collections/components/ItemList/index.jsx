@@ -1,21 +1,38 @@
 import React from "react";
 import Note from "../Note";
 
-export default function ItemList({ items }) {
+export default function ItemList({ items, deleteItem }) {
   return items.map((item, index) => (
-    <Note
-      content={item.content}
-      itemId={item.itemId}
-      saveItemData={saveItemData}
-      key={item.itemId}
-    />
+    <Item item={item} key={item.itemId} deleteItem={deleteItem}></Item>
   ));
 }
+
+const Item = ({ item, deleteItem }) => {
+  switch (item.itemType) {
+    case "note":
+      return (
+        <Note
+          content={item.content}
+          itemId={item.itemId}
+          saveItemData={saveItemData}
+          deleteItem={deleteItem}
+        />
+      );
+    case "site":
+      return <div>这是个site</div>;
+    default:
+      return (
+        <article>
+          <h1>这是什么类型?你是不弄错了itemType</h1>
+          <div>你输入的itemType是{item.itemType}</div>
+        </article>
+      );
+  }
+};
 
 const saveItemData = (itemId, itemType, newContent) => {
   let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
   let has = false;
-  let { collectionName } = previousUserData.userCollections[0];
   let newItems = previousUserData.userCollections[0].items.map((item) => {
     if (item.itemId === itemId) {
       has = true;
@@ -29,12 +46,11 @@ const saveItemData = (itemId, itemType, newContent) => {
       { itemId: itemId, itemType: itemType, content: newContent },
     ];
   let newUserData = {
-    userName: "taojinUser1",
+    ...previousUserData, // userName: "taojinUser1",
     userCollections: [
       {
-        collectionId: "sauqhwiqiu2s",
+        ...previousUserData.userCollections[0], // collectionId: "sauqhwiqiu2s",collectionName:previousUserData.userCollections[0].collectionName,
         items: newItems,
-        collectionName: collectionName,
       },
     ],
   };
