@@ -70,6 +70,24 @@ export default function App() {
     };
     localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
   };
+
+  const deleteItem = (itemId) => {
+    let previousUserData = JSON.parse(localStorage.getItem("taojinUserId1"));
+    let newItems = previousUserData.userCollections[0].items.filter(
+      (item) => item.itemId !== itemId
+    );
+    setItems(newItems);
+    let newUserData = {
+      ...previousUserData,
+      userCollections: [
+        {
+          ...previousUserData.userCollections[0],
+          items: newItems,
+        },
+      ],
+    };
+    localStorage.setItem("taojinUserId1", JSON.stringify(newUserData));
+  };
   // 👇内容为原beautiful-dnd的onDragEnd函数,dnd-kit官方有提供,但后续可以自己尝试官方的写法
   /* // a little function to help us with reordering the result
   const reorder = (list, startIndex, endIndex) => {
@@ -212,7 +230,7 @@ export default function App() {
           items={items.map((i) => i.itemId)} //参考了👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
           strategy={verticalListSortingStrategy}
         >
-          <ItemList items={items}></ItemList>
+          <ItemList items={items} deleteItem={deleteItem}></ItemList>
         </SortableContext>
       </article>
     </DndContext>
