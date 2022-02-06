@@ -1,58 +1,76 @@
-.toolbar {
-  display: flex;
-  justify-content: left;
-  box-sizing: border-box;
-  height: 30px;
-  .more-collections {
-    border-width: 0 0 0 0;
-    border-color: white;
-    background-color: white;
-    cursor: pointer;
-  }
-  .add-current-page {
-    border-width: 0 0 0 0;
-    background-color: white;
-    cursor: pointer;
-    color: #549fd7;
-    &::before {
-      color: #549fd7;
-      content: " + ";
-    }
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+@globalBackgroundColor: #f7f7f7;
+@white: #ffffff; //itemSite
 
-  .add-note {
-    box-sizing: border-box;
-    border-width: 0 0 0 0;
-    border-color: white;
-    background-color: white;
-    cursor: pointer;
-    vertical-align: middle;
-    .add-note-icon {
-      width: 20px;
-      height: 20px;
-    }
-  }
+body {
+  margin: 0;
+}
 
-  .collection-name {
-    border-width: 0;
-    width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
-    line-height: 1.75rem;
-    font-weight: bold;
-    font-size: 1.125rem;
-    &:hover {
-      background-color: #dddddd;
-    }
+@media (min-width: 1024px) {
+  .all {
+    display: grid;
+    grid-template-columns: 300px auto;
+    background-color: @globalBackgroundColor;
   }
 }
-@media (min-width: 640px) {
-  .column {
-    //column-width转化成count后会自动与column-count比较,选择较小的那一个
-    column-width: 300px; //表示每一列的最佳宽度
-    column-fill: auto;
-    // column-count: 2;
-    height: 400px;
+.main {
+  background-color: @globalBackgroundColor;
+  // height: 100vh;
+  .toolbar {
+    display: flex;
+    justify-content: left;
+    box-sizing: border-box;
+    height: 30px;
+    .more-collections {
+      border-width: 0 0 0 0;
+      background-color: inherit;
+      cursor: pointer;
+    }
+    .add-current-page {
+      border-width: 0 0 0 0;
+      background-color: inherit;
+      cursor: pointer;
+      color: #549fd7;
+      &::before {
+        color: #549fd7;
+        content: " + ";
+      }
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .add-note {
+      box-sizing: border-box;
+      border-width: 0 0 0 0;
+      border-color: inherit;
+      background-color: inherit;
+      cursor: pointer;
+      vertical-align: middle;
+      .add-note-icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .collection-name {
+      border-width: 0;
+      width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
+      line-height: 1.75rem;
+      font-weight: bold;
+      font-size: 1.125rem;
+      background-color: inherit;
+      &:hover {
+        background-color: #dddddd;
+      }
+    }
+  }
+  @media (min-width: 638px) {
+    .column {
+      //column-width转化成count后会自动与column-count比较,选择较小的那一个
+      column-width: 337px; //表示每一列的最佳宽度:337px不要动,这是尝试了很久的极限值,具体为什么之后再说⭐
+      column-fill: auto;
+      height: calc(100vh - 50px); //why30不行?
+      // height: calc(100vh - 30px);
+    }
   }
 }

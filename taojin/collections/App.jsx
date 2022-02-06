@@ -4,6 +4,7 @@ import "./App.less";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import ItemList from "./components/ItemList";
+import Aside from "./components/Aside";
 import { ReactComponent as ArrowLeft } from "../../src/icons/arrow-left.svg";
 import { ReactComponent as AddNote } from "../../src/icons/add-note.svg";
 import { initialUserData } from "./initial-data";
@@ -29,11 +30,11 @@ export default function App() {
   if (!localStorage.getItem("taojinUserId1"))
     localStorage.setItem("taojinUserId1", JSON.stringify(initialUserData));
   //获取浏览器内缓存的数据
-  const initialAppData = JSON.parse(localStorage.getItem("taojinUserId1"))
-    .userCollections[0]; //先只弄一个collection的情况
-  const [items, setItems] = useState(initialAppData.items);
+  const initialAppData = JSON.parse(localStorage.getItem("taojinUserId1")); //先只弄一个collection的情况
+  const [appData, setAppData] = useState(initialAppData);
+  const [items, setItems] = useState(initialAppData.userCollections[0].items);
   const [collectionName, setCollectionName] = useState(
-    initialAppData.collectionName
+    initialAppData.userCollections[0].collectionName
     // "这是collection的测试名称"
   );
   const addNote = () => {
@@ -201,38 +202,43 @@ export default function App() {
   // };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      // measuring={measuringConfig}
-    >
-      <section className="toolbar">
-        <button className="more-collections">
-          <ArrowLeft />
-        </button>
-        <input
-          className="collection-name"
-          value={collectionName}
-          onChange={(e) => setCollectionName(e.target.value)}
-          onBlur={saveCollectionName}
-        />
-        <button className="add-current-page" onClick={addSite}>
-          Add current page
-        </button>
-        <button className="add-note" onClick={addNote}>
-          <AddNote className="add-note-icon" />
-          {/* <ContextMenu menu={<CustomMenu />} /> */}
-        </button>
-      </section>
-      <article className="column">
-        <SortableContext
-          items={items.map((i) => i.itemId)} //参考了👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
-          strategy={verticalListSortingStrategy}
+    <div className="all">
+      <Aside></Aside>
+      <main className="main">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          // measuring={measuringConfig}
         >
-          <ItemList items={items} deleteItem={deleteItem}></ItemList>
-        </SortableContext>
-      </article>
-    </DndContext>
+          <section className="toolbar">
+            <button className="more-collections">
+              <ArrowLeft />
+            </button>
+            <input
+              className="collection-name"
+              value={collectionName}
+              onChange={(e) => setCollectionName(e.target.value)}
+              onBlur={saveCollectionName}
+            />
+            <button className="add-current-page" onClick={addSite}>
+              Add current page
+            </button>
+            <button className="add-note" onClick={addNote}>
+              <AddNote className="add-note-icon" />
+              {/* <ContextMenu menu={<CustomMenu />} /> */}
+            </button>
+          </section>
+          <article className="column">
+            <SortableContext
+              items={items.map((i) => i.itemId)} //参考了👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
+              strategy={verticalListSortingStrategy}
+            >
+              <ItemList items={items} deleteItem={deleteItem}></ItemList>
+            </SortableContext>
+          </article>
+        </DndContext>
+      </main>
+    </div>
   );
 }

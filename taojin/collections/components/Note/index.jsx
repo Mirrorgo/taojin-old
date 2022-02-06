@@ -38,10 +38,10 @@ export default function Note({ content, itemId, saveItemData, deleteItem }) {
     // transition,
     // 往上往下移动的处理不同
     borderTop: `${
-      isOver && activeIndex > overIndex ? "2px solid blue" : "2px solid white"
+      isOver && activeIndex > overIndex ? "2px solid blue" : "2px solid #f7f7f7"
     }`,
     borderBottom: `${
-      isOver && activeIndex < overIndex ? "2px solid blue" : "2px solid white"
+      isOver && activeIndex < overIndex ? "2px solid blue" : "2px solid #f7f7f7"
     }`,
     //TODO:优化isDragging的效果,暂时采用全透明
     // filter: `${isDragging ? "blur(1px)" : "revert"}`,

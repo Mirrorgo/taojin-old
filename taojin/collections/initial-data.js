@@ -8,6 +8,23 @@ export const initialUserData = {
       collectionName: "这是Collections的页面的东西",
       //?review:[一个类似上面content的结构,可用于RichText]
     },
+    {
+      collectionId: "test1",
+      items: [
+        { itemId: "1asaqw", itemType: "note", content: [] },
+        {
+          itemId: "2ertsasa",
+          itemType: "site",
+          content: { url: "", name: "" },
+        },
+      ],
+      collectionName: "仅作为临时测试",
+    },
+    {
+      collectionId: "test2",
+      items: [{ itemId: "1asaqw", itemType: "note", content: [] }],
+      collectionName: "仅作为临时测试",
+    },
   ],
 };
 //STAR:这个就是目前的数据结构👇
