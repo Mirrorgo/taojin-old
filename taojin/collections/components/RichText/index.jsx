@@ -73,6 +73,7 @@ export default function RichText({ content, saveItemData, itemId }) {
         renderElement={renderElement}
         placeholder="这里可以写markdown"
         onBlur={() => saveItemData(itemId, "note", value)}
+        // FIXME:编辑之后拖动排序不算失去焦点!!!???
       />
     </Slate>
   );
