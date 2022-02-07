@@ -10,11 +10,6 @@ import { useSortable, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 export default function Note({ content, itemId, saveItemData, deleteItem }) {
-  //👇暂时不知道有什么用
-  // const animateLayoutChanges = (args) =>
-  //   args.isSorting || args.wasDragging
-  //     ? defaultAnimateLayoutChanges(args)
-  //     : true;
   const {
     attributes,
     listeners,
@@ -27,10 +22,8 @@ export default function Note({ content, itemId, saveItemData, deleteItem }) {
     activeIndex,
     overIndex,
   } = useSortable({
-    // animateLayoutChanges,
     id: itemId,
   });
-  // console.log(CSS.Transform.toString(transform));
 
   const style = {
     // TODO:保证不同高度的item在排序的时候不变形=>使用下划线✅=>之后尝试transform的方法,但是目前改不动了
@@ -53,7 +46,7 @@ export default function Note({ content, itemId, saveItemData, deleteItem }) {
   const noteRef = useRef(null);
   return (
     <article className="note" ref={setNodeRef} style={style}>
-      {/* 仅仅是用来获取ref给自定义的右键菜单 */}
+      {/* 仅仅是用来获取ref给自定义的右键菜单,暂时搁置 */}
       <div ref={noteRef}>
         <RichText
           content={content}
