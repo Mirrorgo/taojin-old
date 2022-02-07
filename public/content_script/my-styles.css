@@ -16,7 +16,21 @@
   z-index: 2147483647;
 }
 
-.search-content {
+.search-content-box {
+  position: absolute;
+  top:0;
+  left: 0;
+  height: 100vh;
+  width: 50rem;
   z-index: 2147483647;
   resize: both;
+}
+.search-content-bar {
+  height: 4rem;
+  background-color: aqua;
+}
+.search-content {
+  border: 0;
+  height: calc(100% - 4rem);
+  width: 100%;
 }
