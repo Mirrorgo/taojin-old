@@ -1,33 +1,85 @@
 export const initialUserData = {
   //localStorage.getItem("taojinUserId1")
   userName: "taojinUser1",
-  userCollections: [
+  userCollections: ["sauqhwiqiu2s"], //leftPanel下进行各种操作
+  userActiveCollection: "sauqhwiqiu2s",
+};
+export const initialCollectionData = {
+  //useEffect监听
+  //localStorage.getItem("userActiveCollection")
+  collectionName: "name1",
+  itemIds: [], //排序&删除到回收站
+};
+export const initialNoteData = {
+  //onBlur的时候保存数据
+  //localStorage.getItem("itemId1")
+  itemType: "note",
+  content: [
     {
-      collectionId: "sauqhwiqiu2s",
-      items: [],
-      collectionName: "这是Collections的页面的东西",
-      //?review:[一个类似上面content的结构,可用于RichText]
-    },
-    {
-      collectionId: "test1",
-      items: [
-        { itemId: "1asaqw", itemType: "note", content: [] },
+      type: "paragraph",
+      children: [
         {
-          itemId: "2ertsasa",
-          itemType: "site",
-          content: { url: "", name: "" },
+          text: "newNote",
         },
       ],
-      collectionName: "仅作为临时测试",
-    },
-    {
-      collectionId: "test2",
-      items: [{ itemId: "1asaqw", itemType: "note", content: [] }],
-      collectionName: "仅作为临时测试",
     },
   ],
 };
+
+// 旧的数据
+// export const initialUserData = {
+//   //localStorage.getItem("taojinUserId1")
+//   userName: "taojinUser1",
+//   userCollections: [
+//     {
+//       collectionId: "sauqhwiqiu2s",
+//       items: [],
+//       collectionName: "这是Collections的页面的东西",
+//       //?review:[一个类似上面content的结构,可用于RichText]
+//     },
+//     {
+//       collectionId: "test1",
+//       items: [
+//         { itemId: "1asaqw", itemType: "note", content: [] },
+//         {
+//           itemId: "2ertsasa",
+//           itemType: "site",
+//           content: { url: "", name: "" },
+//         },
+//       ],
+//       collectionName: "仅作为临时测试",
+//     },
+//     {
+//       collectionId: "test2",
+//       items: [{ itemId: "1asaqw", itemType: "note", content: [] }],
+//       collectionName: "仅作为临时测试",
+//     },
+//   ],
+// };
 //STAR:这个就是目前的数据结构👇
+//TODO设计一个防止重复id的东西=>一个const ids = Map(id1,id2)遍历一遍?有则重新生成
+const newUserDataStructure = {
+  //localStorage.getItem("taojinUserId1")
+  userName: "taojinUser1",
+  userCollections: ["collectionId1", "collectionId2", "collectionId3"], //leftPanel下进行各种操作
+};
+const newCollectionDataStructure = {
+  //localStorage.getItem("collectionId1")
+  collectionName: "name1",
+  items: ["itemId1", "itemId2"], //排序&删除到回收站
+};
+const newItemDataStructure = {
+  //onBlur的时候保存数据
+  //localStorage.getItem("itemId1")
+  itemType: "note",
+  content: [],
+};
+
+//taojinuserid1:[collectionid1,id2,id3]
+//colllid1:{collename,[itemid1,itemid2,itemid3]}
+//itemId1:{itemtype,content}
+
+//👇旧的项目数据结构
 let dataStructureOfTaojinUserId1 = {
   //localStorage.getItem("taojinUserId1")
   userName: "taojinUser1",

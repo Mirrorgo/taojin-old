@@ -17,6 +17,8 @@ import {
 } from "@dnd-kit/sortable";
 import CollectionList from "../CollectionList";
 import "./index.less";
+import { useImmer } from "use-immer";
+import { initialUserData } from "../../initial-data";
 
 export default function Aside() {
   const sensors = useSensors(
@@ -25,9 +27,11 @@ export default function Aside() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-  const [collections, setCollections] = useState(
-    JSON.parse(localStorage.getItem("taojinUserId1")).userCollections
-  );
+  // const [collections, setCollections] = useState(
+  //   JSON.parse(localStorage.getItem("taojinUserId1")).userCollections
+  // );
+
+  const [user, setUser] = useImmer(initialUserData);
 
   return (
     <aside className="left-panel">
