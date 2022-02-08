@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import html2canvas from "html2canvas";
 import { nanoid } from "nanoid";
 import ItemList from "../../components/ItemList";
-import Aside from "../../components/Aside";
+import CollectionList from "../../components/CollectionList";
 import { ReactComponent as ArrowLeft } from "../../../../src/icons/arrow-left.svg";
 import { ReactComponent as AddNote } from "../../../../src/icons/add-note.svg";
 import {
@@ -29,7 +29,11 @@ import {
 import { useImmer } from "use-immer";
 import "./index.less";
 export default function Main() {
-  const [user, setUser] = useImmer({});
+  const [user, setUser] = useImmer({
+    userName: "taojinUser1",
+    userCollections: [],
+    userActiveCollection: "",
+  });
   const [collection, setCollection] = useImmer({
     collectionName: "",
     itemIds: [],
@@ -50,17 +54,12 @@ export default function Main() {
     //获取浏览器内缓存的数据
     initialUser = JSON.parse(localStorage.getItem("taojinUserId1"));
     setUser(initialUser);
-    //根据缓存的UserData的activeCollection初始化collectionData
-    if (!localStorage.getItem(initialUser.userActiveCollection)) {
-      localStorage.setItem(
-        initialUser.userActiveCollection,
-        JSON.stringify(initialCollectionData)
+    if (initialUser.userActiveCollection) {
+      let initialCollection = JSON.parse(
+        localStorage.getItem(initialUser.userActiveCollection)
       );
+      setCollection(initialCollection);
     }
-    const initialCollection = JSON.parse(
-      localStorage.getItem(initialUser.userActiveCollection)
-    );
-    setCollection(initialCollection);
   }, []);
   useEffect(() => {
     //监听collection,实时保存
@@ -70,7 +69,9 @@ export default function Main() {
         JSON.stringify(collection)
       );
   }, [collection]);
-
+  useEffect(() => {
+    localStorage.setItem("taojinUserId1", JSON.stringify(user));
+  }, [user]);
   const handleAddNote = useCallback(() => {
     //✅
     const newId = nanoid();
@@ -177,9 +178,76 @@ export default function Main() {
   };
   //TODO:weakMap优化数据结构
 
+  const handleDragEndAside = () => {
+    console("handleDragEnd");
+  };
+
+  const handleDeleteCollection = (collectionId) => {
+    localStorage.removeItem(collectionId);
+    //删除空的内容
+    const deleteIndex = user.userCollections.findIndex(
+      (cur) => cur === collectionId
+    );
+    setUser((draft) => {
+      draft.userCollections.splice(deleteIndex, 1);
+    });
+    if (user.userActiveCollection === collectionId) {
+      setUser((draft) => {
+        draft.userActiveCollection = user.userCollections[deleteIndex + 1];
+      });
+      // FIXME:无效?目前BUG会把新的collection变成deleteIndex+1
+      setCollection((draft) => {
+        draft = JSON.parse(
+          localStorage.getItem(user.userCollections[deleteIndex + 1])
+        );
+      });
+    }
+  };
+
+  const handleAddCollection = () => {
+    const newId = nanoid();
+    setUser((draft) => {
+      draft.userCollections.push(newId);
+    });
+    if (!user.userActiveCollection)
+      setUser((draft) => {
+        draft.userActiveCollection = newId;
+      });
+    localStorage.setItem(newId, JSON.stringify(initialCollectionData));
+    if (user.userCollections.length === 0) {
+      setCollection((draft) => {
+        draft.collectionName = "new collection";
+      });
+    }
+  };
+
   return (
     <div className="all">
-      {/* <Aside></Aside> */}
+      <aside className="left-panel">
+        <header className="title">
+          <div>Collections</div>
+        </header>
+        <button className="add-new-collection" onClick={handleAddCollection}>
+          Add new collection
+        </button>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEndAside}
+        >
+          <article className="column">
+            <SortableContext
+              items={user.userCollections} //参考了👉提供的解决方案https://codesandbox.io/s/wnxzo?file=/src/App.jsx:656-680
+              strategy={verticalListSortingStrategy}
+            >
+              <CollectionList
+                itemIds={user.userCollections}
+                deleteItem={handleDeleteCollection}
+              ></CollectionList>
+            </SortableContext>
+          </article>
+        </DndContext>
+      </aside>
       <main className="main">
         <DndContext
           sensors={sensors}

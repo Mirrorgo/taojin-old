@@ -1,13 +1,15 @@
 export const initialUserData = {
   //localStorage.getItem("taojinUserId1")
   userName: "taojinUser1",
-  userCollections: ["sauqhwiqiu2s"], //leftPanel下进行各种操作
-  userActiveCollection: "sauqhwiqiu2s",
+  /*  userCollections: ["sauqhwiqiu2s"], //leftPanel下进行各种操作
+  userActiveCollection: "sauqhwiqiu2s", */
+  userCollections: [], //leftPanel下进行各种操作
+  userActiveCollection: undefined,
 };
 export const initialCollectionData = {
   //useEffect监听
   //localStorage.getItem("userActiveCollection")
-  collectionName: "name1",
+  collectionName: "new collection",
   itemIds: [], //排序&删除到回收站
 };
 export const initialNoteData = {

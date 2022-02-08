@@ -66,13 +66,14 @@ export default function RichText({ content, saveItemData, itemId }) {
       value={value}
       onChange={(value) => {
         setValue(value);
+        saveItemData(itemId, "note", value); //暂时先放这里,变成实时的
       }}
     >
       <Editable
         className="slate"
         renderElement={renderElement}
         placeholder="这里可以写markdown"
-        onBlur={() => saveItemData(itemId, "note", value)}
+        // onBlur={() => saveItemData(itemId, "note", value)}
         // FIXME:编辑之后拖动排序不算失去焦点!!!???
       />
     </Slate>

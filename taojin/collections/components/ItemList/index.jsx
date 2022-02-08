@@ -20,9 +20,6 @@ const Item = ({ itemId, deleteItem, saveItemData }) => {
     ? JSON.parse(localStorage.getItem(itemId))
     : console.log("无法根据这个itemId获取到东西");
   //先暂时这么写
-  useLayoutEffect(() => {
-    // item = JSON.parse(localStorage.getItem(itemId));
-  }, []);
   switch (item.itemType) {
     case "note":
       return (

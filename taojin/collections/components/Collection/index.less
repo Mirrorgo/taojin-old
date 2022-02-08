@@ -1,0 +1,37 @@
+.collectionList {
+  background-color: white;
+  margin: 10px;
+  border-radius: 10px;
+  background-color: #abc0f1;
+  &:hover {
+    .bottom-bar {
+      .delete-button {
+        opacity: 1;
+      }
+    }
+  }
+  .collection-name {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    height: 30px;
+  }
+  .bottom-bar {
+    display: flex;
+    justify-content: space-between;
+
+    .collection-item-number {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: gray;
+      padding-left: 5px;
+    }
+    .delete-button {
+      opacity: 0;
+      padding-right: 10px;
+      transition-property: opacity;
+      transition-duration: 0.3s;
+    }
+  }
+}

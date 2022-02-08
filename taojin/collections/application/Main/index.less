@@ -3,13 +3,45 @@
 
 body {
   margin: 0;
+  background-color: @globalBackgroundColor;
 }
 
 @media (min-width: 1024px) {
   .all {
     display: grid;
-    grid-template-columns: 300px auto;
     background-color: @globalBackgroundColor;
+
+    grid-template-columns: 300px auto;
+  }
+}
+.left-panel {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .left-panel {
+    display: block;
+    .title {
+      padding-left: 30px;
+      border-width: 0;
+      width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
+      line-height: 1.75rem;
+      font-weight: bold;
+      font-size: 1.125rem;
+    }
+    .add-new-collection {
+      padding-left: 20px;
+      border-width: 0 0 0 0;
+      background-color: @globalBackgroundColor;
+      cursor: pointer;
+      color: #549fd7;
+      &::before {
+        color: #549fd7;
+        content: " + ";
+      }
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 .main {
@@ -55,10 +87,10 @@ body {
     .collection-name {
       border-width: 0;
       width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
+      background-color: inherit;
       line-height: 1.75rem;
       font-weight: bold;
       font-size: 1.125rem;
-      background-color: inherit;
       &:hover {
         background-color: #dddddd;
       }
