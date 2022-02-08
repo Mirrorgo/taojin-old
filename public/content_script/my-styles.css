@@ -10,27 +10,62 @@
 } */
 
 .taojin-searchbar {
-  position: absolute;
-  top: 30%;
-  left: 40%;
+  position: fixed;
+  top: 160px;
+  width: 662px;
+  left:0;
+  right: 0;
+  margin: auto;
+  border: 1px;
+  background-color: white;
+  box-shadow: 0 0 30px bisque;
+  border-radius: 10px;
   z-index: 2147483647;
+}
+.search-input {
+  border: 0;
+  width: 602px;
+  height: 46px;
+  font-size: x-large;
+  background-color: bisque;
+  margin: 10px;
+  padding: 10px 20px;
+}
+.search-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .search-content-box {
-  position: absolute;
+  position: fixed;
   top:0;
   left: 0;
   height: 100vh;
-  width: 50rem;
-  z-index: 2147483647;
+  width: 600px;
   resize: both;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 0 30px black;
 }
 .search-content-bar {
-  height: 4rem;
-  background-color: aqua;
+  height: 3rem;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: rgb(53,53,53);
+}
+.delete-button{
+  height: 100%;
+  border: 0;
+  border-radius: 0 4px 0 0;
+  width: 4rem;
+  font-size: x-large;
+  background: rgb(53,53,53);
+}
+.delete-button:hover {
+  background-color: black;
 }
 .search-content {
   border: 0;
-  height: calc(100% - 4rem);
+  height: calc(100% - 3rem);
   width: 100%;
 }

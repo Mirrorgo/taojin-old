@@ -31,8 +31,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.juejin.cn/*",
-        "https://www.baidu.com/*"
+        "<all_urls>"
       ],
       "js": [
         "./content_script/content-script.js"
