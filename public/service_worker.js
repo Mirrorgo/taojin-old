@@ -1,6 +1,7 @@
-chrome.action.onClicked.addListener((tab) => {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    files: ["./content_script/content-script.js"],
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    fetch(message)
+      .then(response => response.json())
+      .then(json => sendResponse(json))
+      .catch(err => sendResponse(err));
+    return true;
   });
-});
