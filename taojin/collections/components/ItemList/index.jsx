@@ -2,23 +2,35 @@ import React, { useLayoutEffect } from "react";
 import Note from "../Note";
 import { useEffect } from "react";
 
-export default function ItemList({ itemIds, deleteItem, saveItemData }) {
+export default function ItemList({
+  itemIds,
+  deleteItem,
+  saveItemData,
+  activeCollectionFullData,
+}) {
   return itemIds.map((itemId) => (
     <Item
       itemId={itemId}
       key={itemId}
+      activeCollectionFullData={activeCollectionFullData}
       deleteItem={deleteItem}
       saveItemData={saveItemData}
     ></Item>
   ));
 }
 
-const Item = ({ itemId, deleteItem, saveItemData }) => {
+const Item = ({
+  itemId,
+  deleteItem,
+  saveItemData,
+  activeCollectionFullData,
+}) => {
   // let item = { itemType: "?", content: [] }; //不写{}里的会出问题?
   //FIXME:👇貌似不太行,怎么样获取数据比较合理?
-  const item = localStorage.getItem(itemId)
+  let item = localStorage.getItem(itemId)
     ? JSON.parse(localStorage.getItem(itemId))
-    : console.log("无法根据这个itemId获取到东西");
+    : { itemType: "" };//得给个凑数的,不然删除的时候会报错
+
   //先暂时这么写
   switch (item.itemType) {
     case "note":

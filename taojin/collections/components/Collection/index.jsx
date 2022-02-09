@@ -24,6 +24,8 @@ export default function Collection({
     id: collectionId,
   });
   let collection = { collectionName: "" };
+  let isActiveCollection =
+    activeCollectionFullData.activeCollectionId === collectionId ? true : false;
   collection = localStorage.getItem(collectionId)
     ? JSON.parse(localStorage.getItem(collectionId))
     : console.log("无法根据这个itemId获取到东西");
@@ -39,6 +41,9 @@ export default function Collection({
   return (
     <article
       className="collection"
+      style={{
+        backgroundColor: `${isActiveCollection ? "#abc0f1" : "#dedeec"}`,
+      }}
       onClick={() => handleSwitchCollection(collectionId)}
     >
       <div className="collection-name">{collection.collectionName}</div>
@@ -48,7 +53,10 @@ export default function Collection({
         </span>
         <button
           className="delete-button"
-          onClick={() => deleteItem(collectionId)}
+          onClick={(e) => {
+            e.stopPropagation(); //阻止事件冒泡
+            return deleteItem(collectionId);
+          }}
           style={{ backgroundColor: "transparent", borderStyle: "none" }}
         >
           <Delete />

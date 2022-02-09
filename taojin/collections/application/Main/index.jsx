@@ -50,6 +50,7 @@ export default function Main() {
     setActiveCollectionFullData((draft) => {
       draft.activeCollectionId = user.userActiveCollection;
     });
+    // console.log(user.userActiveCollection,'当前');
   }, [user.userActiveCollection]);
   useEffect(() => {
     setActiveCollectionFullData((draft) => {
@@ -63,7 +64,16 @@ export default function Main() {
   }, [collection.itemIds.length]);
   //👆记得替换掉这个临时的解决方案,让无localStorage的时候也能流畅的跑
   /* ============================ */
-  //   const [userCollectionList,useUserCollectionList] = useImmer([])
+  useEffect(() => {
+    if (!user.userActiveCollection) {
+      setCollection({ collectionName: "", itemIds: [] });
+    } else {
+      setCollection(
+        JSON.parse(localStorage.getItem(user.userActiveCollection))
+      );
+    }
+  }, [user.userActiveCollection]);
+
   //DndContext所需的Sensor
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -103,6 +113,9 @@ export default function Main() {
     localStorage.setItem("taojinUserId1", JSON.stringify(user));
   }, [user]);
   const handleAddNote = useCallback(() => {
+    if (!user.userActiveCollection) {
+      return;
+    } //防止没有集锦的时候添加item
     //✅
     const newId = nanoid();
     setCollection((draft) => {
@@ -110,7 +123,7 @@ export default function Main() {
     });
     //NOTE:此处已经新建了个note在localStorage,但collection没有新建
     localStorage.setItem(newId, JSON.stringify(initialNoteData)); //这个是否要放入useEffect?怎么放?
-  }, []);
+  }, [user.userActiveCollection]);
 
   const handleDeleteItem = (itemId) => {
     localStorage.removeItem(itemId);
@@ -213,8 +226,13 @@ export default function Main() {
   };
 
   const handleDeleteCollection = (collectionId) => {
+    const toBeDeletedItemIds = JSON.parse(
+      localStorage.getItem(collectionId)
+    ).itemIds;
     localStorage.removeItem(collectionId);
-    //删除空的内容
+    toBeDeletedItemIds.map((toBeDeletedItemId) => {
+      localStorage.removeItem(toBeDeletedItemId);
+    }); //删除collection的时候也要删除collection里面的items
     const deleteIndex = user.userCollections.findIndex(
       (cur) => cur === collectionId
     );
@@ -225,9 +243,10 @@ export default function Main() {
       setUser((draft) => {
         draft.userActiveCollection = user.userCollections[deleteIndex + 1];
       });
+      console.log("设置成", deleteIndex + 1, "号");
       setCollection((draft) => {
         draft = JSON.parse(
-          localStorage.getItem(user.userCollections[deleteIndex + 1])
+          localStorage.getItem(user.userCollections[deleteIndex])
         );
       });
     }
@@ -319,6 +338,7 @@ export default function Main() {
               strategy={verticalListSortingStrategy}
             >
               <ItemList
+                activeCollectionFullData={activeCollectionFullData}
                 itemIds={collection.itemIds}
                 deleteItem={handleDeleteItem}
                 saveItemData={saveItemData}
