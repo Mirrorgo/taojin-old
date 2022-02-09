@@ -38,6 +38,32 @@ export default function Main() {
     collectionName: "",
     itemIds: [],
   });
+  /* =========================== */
+  // FIXME:一个临时的解决方案👇
+  // 问题来源:setState为异步,localStorage为同步,导致总会慢一步
+  const [activeCollectionFullData, setActiveCollectionFullData] = useImmer({
+    activeCollectionId: "",
+    activeCollectionName: "",
+    activeCollectionItemIdsLength: undefined,
+  });
+  useEffect(() => {
+    setActiveCollectionFullData((draft) => {
+      draft.activeCollectionId = user.userActiveCollection;
+    });
+  }, [user.userActiveCollection]);
+  useEffect(() => {
+    setActiveCollectionFullData((draft) => {
+      draft.activeCollectionName = collection.collectionName;
+    });
+  }, [collection.collectionName]);
+  useEffect(() => {
+    setActiveCollectionFullData((draft) => {
+      draft.activeCollectionItemIdsLength = collection.itemIds.length;
+    });
+  }, [collection.itemIds.length]);
+  //👆记得替换掉这个临时的解决方案,让无localStorage的时候也能流畅的跑
+  /* ============================ */
+  //   const [userCollectionList,useUserCollectionList] = useImmer([])
   //DndContext所需的Sensor
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -69,6 +95,10 @@ export default function Main() {
         JSON.stringify(collection)
       );
   }, [collection]);
+  //   useEffect(() => {
+  //     setCollection(JSON.parse(localStorage.getItem(user.userActiveCollection)));
+  //   }, [user.userActiveCollection]);
+
   useEffect(() => {
     localStorage.setItem("taojinUserId1", JSON.stringify(user));
   }, [user]);
@@ -195,7 +225,6 @@ export default function Main() {
       setUser((draft) => {
         draft.userActiveCollection = user.userCollections[deleteIndex + 1];
       });
-      // FIXME:无效?目前BUG会把新的collection变成deleteIndex+1
       setCollection((draft) => {
         draft = JSON.parse(
           localStorage.getItem(user.userCollections[deleteIndex + 1])
@@ -221,6 +250,14 @@ export default function Main() {
     }
   };
 
+  const handleSwitchCollection = (targetCollectionId) => {
+    setUser((draft) => {
+      draft.userActiveCollection = targetCollectionId;
+    });
+    setCollection(JSON.parse(localStorage.getItem(targetCollectionId)));
+    console.log(targetCollectionId);
+  };
+
   return (
     <div className="all">
       <aside className="left-panel">
@@ -241,7 +278,9 @@ export default function Main() {
               strategy={verticalListSortingStrategy}
             >
               <CollectionList
+                activeCollectionFullData={activeCollectionFullData} //FIXME
                 itemIds={user.userCollections}
+                handleSwitchCollection={handleSwitchCollection}
                 deleteItem={handleDeleteCollection}
               ></CollectionList>
             </SortableContext>

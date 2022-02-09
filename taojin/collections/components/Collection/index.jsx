@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import "./index.less";
 import { ReactComponent as Delete } from "../../../../src/icons/delete.svg";
 
-export default function Collection({ collectionId, deleteItem }) {
+export default function Collection({
+  collectionId,
+  deleteItem,
+  activeCollectionFullData,
+  handleSwitchCollection,
+}) {
   const {
     attributes,
     listeners,
@@ -22,9 +27,20 @@ export default function Collection({ collectionId, deleteItem }) {
   collection = localStorage.getItem(collectionId)
     ? JSON.parse(localStorage.getItem(collectionId))
     : console.log("无法根据这个itemId获取到东西");
-  console.log(collection);
+  useEffect(() => {
+    //FIXME:一个临时解决方案
+    if (activeCollectionFullData.activeCollectionId === collectionId) {
+      collection = localStorage.getItem(collectionId)
+        ? JSON.parse(localStorage.getItem(collectionId))
+        : console.log("无法根据这个itemId获取到东西");
+    }
+  }, [activeCollectionFullData]);
+
   return (
-    <article className="collectionList">
+    <article
+      className="collection"
+      onClick={() => handleSwitchCollection(collectionId)}
+    >
       <div className="collection-name">{collection.collectionName}</div>
       <div className="bottom-bar">
         <span className="collection-item-number">

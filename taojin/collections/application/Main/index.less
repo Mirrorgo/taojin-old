@@ -46,7 +46,6 @@ body {
 }
 .main {
   background-color: @globalBackgroundColor;
-  // height: 100vh;
   .toolbar {
     display: flex;
     justify-content: left;
@@ -56,6 +55,11 @@ body {
       border-width: 0 0 0 0;
       background-color: inherit;
       cursor: pointer;
+    }
+    @media (min-width: 1024px) {
+      .more-collections {
+        display: none;
+      }
     }
     .add-current-page {
       border-width: 0 0 0 0;
