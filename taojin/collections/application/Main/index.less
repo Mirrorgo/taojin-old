@@ -5,7 +5,19 @@ body {
   margin: 0;
   background-color: @globalBackgroundColor;
 }
+.column {
+  height: calc(100vh - 50px); //why30不行?
+  overflow: auto;
+  //TODO:优化滚动条
+  // &::-webkit-scrollbar {
+  //   width: 8px;
+  //   height: 8px;
+  // }
 
+  // &::-webkit-scrollbar-thumb {
+  //   background-color: rgb(230, 227, 227);
+  // }
+}
 @media (min-width: 1024px) {
   .all {
     display: grid;
@@ -17,9 +29,71 @@ body {
 .left-panel {
   display: none;
 }
+
+// .fixed-bar {
+//   position: sticky;
+// }
+
+.hover-left-panel {
+  display: block;
+  position: absolute;
+  width: 100vw; //FIXME:左右怎么还有空间
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-anchor: auto;
+  background-color: @globalBackgroundColor;
+  z-index: 10; //防止重叠
+  .title {
+    padding-left: 30px;
+    border-width: 0;
+    width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
+    line-height: 1.75rem;
+    font-weight: bold;
+    font-size: 1.125rem;
+  }
+  .add-new-collection {
+    padding-left: 20px;
+    border-width: 0 0 0 0;
+    background-color: @globalBackgroundColor;
+    cursor: pointer;
+    color: #549fd7;
+    &::before {
+      color: #549fd7;
+      content: " + ";
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  & + .main {
+    display: none;
+  }
+}
+@media (min-width: 638px) {
+  .hover-left-panel {
+    width: 300px;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    & + .main {
+      display: block;
+    }
+  }
+}
 @media (min-width: 1024px) {
-  .left-panel {
+  .left-panel,
+  .hover-left-panel {
     display: block;
+    position: initial;
+    width: 300px;
+    box-shadow: initial;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    // FIXME:改动滚动条的父容器,目前会整个滚动导致诡异bug:滚动条位置变化
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(230, 227, 227);
+    }
     .title {
       padding-left: 30px;
       border-width: 0;
@@ -87,7 +161,6 @@ body {
         height: 20px;
       }
     }
-
     .collection-name {
       border-width: 0;
       width: 180px; //TODO:修改为一般情况下宽度与value的宽度相当,media比较窄的时候会隐藏部分内容,并设置min-width
@@ -100,6 +173,7 @@ body {
       }
     }
   }
+
   @media (min-width: 638px) {
     .column {
       //column-width转化成count后会自动与column-count比较,选择较小的那一个
@@ -107,6 +181,7 @@ body {
       column-fill: auto;
       height: calc(100vh - 50px); //why30不行?
       // height: calc(100vh - 30px);
+      overflow-y: hidden;
     }
   }
 }

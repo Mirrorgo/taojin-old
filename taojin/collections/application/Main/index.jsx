@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import html2canvas from "html2canvas";
 import { nanoid } from "nanoid";
 import ItemList from "../../components/ItemList";
@@ -10,7 +10,6 @@ import {
   initialCollectionData,
   initialNoteData,
 } from "../../initial-data";
-
 import {
   DndContext,
   closestCenter,
@@ -38,6 +37,7 @@ export default function Main() {
     collectionName: "",
     itemIds: [],
   });
+  const [showLeftPanel, setShowLeftPanel] = useState(false);
   /* =========================== */
   // FIXME:一个临时的解决方案👇
   // 问题来源:setState为异步,localStorage为同步,导致总会慢一步
@@ -270,22 +270,27 @@ export default function Main() {
   };
 
   const handleSwitchCollection = (targetCollectionId) => {
+    setShowLeftPanel(false);
     setUser((draft) => {
       draft.userActiveCollection = targetCollectionId;
     });
     setCollection(JSON.parse(localStorage.getItem(targetCollectionId)));
     console.log(targetCollectionId);
   };
-
+  const showMoreCollection = () => {
+    setShowLeftPanel(true);
+  };
   return (
     <div className="all">
-      <aside className="left-panel">
-        <header className="title">
-          <div>Collections</div>
-        </header>
-        <button className="add-new-collection" onClick={handleAddCollection}>
-          Add new collection
-        </button>
+      <aside className={!showLeftPanel ? "left-panel" : "hover-left-panel"}>
+        <div className="fixed-bar">
+          <header className="title">
+            <div>Collections</div>
+          </header>
+          <button className="add-new-collection" onClick={handleAddCollection}>
+            Add new collection
+          </button>
+        </div>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -313,7 +318,10 @@ export default function Main() {
           onDragEnd={handleDragEnd}
         >
           <section className="toolbar">
-            <button className="more-collections">
+            <button
+              className="more-collections"
+              onClick={() => showMoreCollection()}
+            >
               <ArrowLeft />
             </button>
             <input
