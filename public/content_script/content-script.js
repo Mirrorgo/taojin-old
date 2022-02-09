@@ -8,6 +8,7 @@ const searchTools = [
     url: "https://www.baidu.com/s?wd=",
   }
 ];
+let searchTool = 0;
 const searchContentButton = document.createElement("button");
 searchContentButton.className = "search-content-button";
 searchContentButton.innerHTML = "<div>T</div>";
@@ -29,12 +30,19 @@ const inputEl = document.createElement("input");
 inputEl.id = "search-input";
 inputEl.className = "search-input";
 inputEl.placeholder = searchTools[0].name;
+inputEl.autocomplete = "off";
 inputEl.addEventListener("keydown", search());
+inputEl.addEventListener("input", getSearchPrompt());
 inputEl.addEventListener("blur", function () {
+  inputEl.value = "";
+  searchPrompt.innerHTML = "";
   searchBar.remove();
 });
 
+const searchPrompt = document.createElement("div");
+
 searchBar.appendChild(inputEl);
+searchBar.appendChild(searchPrompt);
 // 是否显示搜索框
 function controlSearchBar() {
   console.log(show, searchBar);
@@ -62,7 +70,6 @@ function addSearchBar() {
 }
 // 输入框的键盘事件
 function search() {
-  let searchTool = 0;
   return function (e) {
     console.log(e);
     const inputEl = document.getElementById("search-input");
@@ -72,15 +79,14 @@ function search() {
       inputEl.placeholder = searchTools[searchTool].name;
       inputEl.focus();
       e.preventDefault();
+      return false;
     }
     const searchValue = inputEl.value;
     if (e.key === "Enter" && searchValue) {
       console.log(inputEl)
-      inputEl.value = "";
       controlSearchBar();
-      addSearchContent(searchTools[searchTool].url + searchValue, searchTools[searchTool].name);
+      addSearchContent(searchTools[searchTool].url + searchValue.replaceAll(" ", "+"));
       return false;
-
     }
   }
 
@@ -95,7 +101,7 @@ function showSearchContent() {
 
 // 添加搜索内容
 let maxZindex = 9999;
-function addSearchContent(url, name) {
+function addSearchContent(url) {
   // 搜索结果框体
   const searchContentBox = document.createElement("div");
   searchContentBox.className = "search-content-box";
@@ -129,7 +135,7 @@ function addSearchContent(url, name) {
 
   // 搜索结果
   let searchContent = null;
-  switch (name) {
+  switch (searchTools[searchTool].name) {
     case "bing":
       searchContent = document.createElement("iframe");
       searchContent.src = url;
@@ -146,14 +152,46 @@ function addSearchContent(url, name) {
   searchContentBox.appendChild(searchContent);
   document.body.appendChild(searchContentBox);
 }
+// https://cn.bing.com/AS/Suggestions?pt=page.serp&bq=bing+%E6%90%9C%E7%B4%A2%E6%8F%90%E7%A4%BA&mkt=zh-cn&ds=mobileweb&qry=bing%20s&asv=1&cp=6&msbqf=false&cvid=3A600DD985FD402997901DCF658A08FD
+// 搜索提示
+function getSearchPrompt() {
+  return function () {
+    console.log("change");
+    const url = "https://cn.bing.com/AS/Suggestions?&mkt=zh-cn&cvid=BCA9094E94944E14A2710F627C26008&qry=" + inputEl.value;
+    searchPrompt.className = "bing-search-prompt";
+    const message = {
+      type: 2,
+      url,
+    }
+    chrome.runtime.sendMessage(message, (response) => {
+      searchPrompt.innerHTML = response
+        .replaceAll(/(<script(.*?)>)(.|\n)*?(<\/script>)/g, "")
+        .replaceAll(/(<li(.*?)stype="HS"(.*?)>)(.|\n)*?(<\/li>)/g, "");
+      const nodeList = document.querySelectorAll(".sa_sg");
+      for (let i = 0, len = nodeList.length; i < len; i++) {
+        const node = nodeList[i]
+        const promptVal = node.querySelector(".sa_tm_text").innerHTML.replaceAll(/<\/?strong>/g, "");
+        node.addEventListener("mousedown", function () {
+          addSearchContent(searchTools[searchTool].url + promptVal.replaceAll(" ", "+"));
+          // controlSearchBar();
+        });
+      }
+    });
+  }
+}
+
+// 百度搜索结果
 function baiduSearchContent(url) {
   const searchContent = document.createElement("div");
   searchContent.className = "baidu-search-content";
-  chrome.runtime.sendMessage(url + "&tn=json&rn=50", ({ feed: response }) => {
-    console.log(url, response);
-    const { entry } = response;
+  const message = {
+    url: url + "&tn=json&rn=50",
+    type: 1,
+  }
+  chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
+    console.log("kk")
     for (const { abs, title, url } of entry) {
-      if(!title) {
+      if (!title) {
         continue;
       }
       searchContent.innerHTML += `
