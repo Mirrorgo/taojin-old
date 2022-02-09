@@ -35,7 +35,25 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
-
+.search-content-button {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 10px;
+  top: 10px;
+  height: 4rem;
+  width: 4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: rgb(53,53,53);
+  background-color: bisque;
+  box-shadow: 0 0 10px bisque;
+  font-size: xx-large;
+  line-height: 3rem;
+  z-index: 2147483647;
+}
 .search-content-box {
   position: fixed;
   top:0;
@@ -47,21 +65,25 @@
   box-shadow: 0 0 30px black;
 }
 .search-content-bar {
-  height: 3rem;
-  border-radius: 4px 4px 0 0;
   display: flex;
   flex-direction: row-reverse;
+  height: 3rem;
+  border-radius: 4px 4px 0 0;
   background-color: rgb(53,53,53);
 }
-.delete-button{
+.content-bar-button {
   height: 100%;
+  width: 4rem;
+  padding: 0;
   border: 0;
   border-radius: 0 4px 0 0;
-  width: 4rem;
   font-size: x-large;
+  line-height: 3rem;
+  color: bisque;
   background: rgb(53,53,53);
 }
-.delete-button:hover {
+
+.content-bar-button:hover {
   background-color: black;
 }
 .search-content {

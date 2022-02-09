@@ -1,7 +1,4 @@
 //// content-script.js ////
-// 创建搜索框
-document.addEventListener('keydown', addSearchBar());
-const searchBar = document.createElement("div");
 const searchTools = [
   {
     name: "bing",
@@ -11,6 +8,19 @@ const searchTools = [
     url: "https://www.baidu.com/s?wd=",
   }
 ];
+const searchContentButton = document.createElement("button");
+searchContentButton.className = "search-content-button";
+searchContentButton.innerHTML = "<div>T</div>";
+searchContentButton.addEventListener("click", showSearchContent);
+moveCol(searchContentButton);
+console.log(searchContentButton)
+document.body.appendChild(searchContentButton);
+
+
+// 创建搜索框
+document.addEventListener("keydown", addSearchBar());
+const hideSearchContentList = [];
+const searchBar = document.createElement("div");
 let show = true;
 searchBar.id = "taojin-searchbar";
 searchBar.className = "taojin-searchbar";
@@ -19,9 +29,10 @@ const inputEl = document.createElement("input");
 inputEl.id = "search-input";
 inputEl.className = "search-input";
 inputEl.placeholder = searchTools[0].name;
-inputEl.addEventListener('keydown', search());
-// inputEl.addEventListener('blur',controlSearchBar);
-
+inputEl.addEventListener("keydown", search());
+inputEl.addEventListener("blur", function () {
+  searchBar.remove();
+});
 
 searchBar.appendChild(inputEl);
 // 是否显示搜索框
@@ -31,7 +42,7 @@ function controlSearchBar() {
     document.body.appendChild(searchBar);
     inputEl.focus();
   } else {
-    searchBar.remove();
+    inputEl.blur();
   }
   show = !show;
 }
@@ -41,7 +52,7 @@ function addSearchBar() {
   return function (e) {
     if (step === 0 && e.ctrlKey) {
       step = 1;
-    } else if (step === 1 && e.key === 'q') {
+    } else if (step === 1 && e.key === "q") {
       controlSearchBar();
       step = 0;
     } else {
@@ -74,6 +85,14 @@ function search() {
   }
 
 }
+
+// 显示隐藏
+function showSearchContent() {
+  for (const el of hideSearchContentList) {
+    el.style.display = "block";
+  }
+}
+
 // 添加搜索内容
 let maxZindex = 9999;
 function addSearchContent(url) {
@@ -81,7 +100,7 @@ function addSearchContent(url) {
   const searchContentBox = document.createElement("div");
   searchContentBox.className = "search-content-box";
   searchContentBox.style.zIndex = maxZindex++;
-  searchContentBox.addEventListener('mousedown', function () {
+  searchContentBox.addEventListener("mousedown", function () {
     searchContentBox.style.zIndex = maxZindex++;
     console.log(maxZindex);
   })
@@ -91,12 +110,22 @@ function addSearchContent(url) {
   move(searchContentBox, searchContentBar);
   // 关闭
   const deleteButton = document.createElement("button");
-  deleteButton.className = "delete-button";
-  deleteButton.innerHTML = "x";
+  deleteButton.className = "content-bar-button";
+  deleteButton.innerHTML = "X";
   deleteButton.addEventListener("click", function () {
     searchContentBox.remove()
   });
+  // 隐藏
+  const hideButton = document.createElement("button");
+  hideButton.className = "content-bar-button";
+  hideButton.innerHTML = "<";
+  hideButton.addEventListener("click", function () {
+    hideSearchContentList.push(searchContentBox);
+    searchContentBox.style.display = "none";
+  });
+
   searchContentBar.appendChild(deleteButton);
+  searchContentBar.appendChild(hideButton);
 
   // 搜索结果
   const searchContent = document.createElement("iframe");
@@ -109,7 +138,7 @@ function addSearchContent(url) {
   searchContentBox.appendChild(searchContent);
   document.body.appendChild(searchContentBox);
 }
-// 拖动
+// 横向拖动
 function move(box, moveBar) {
   moveBar.addEventListener("mousedown", function (e) {
     const eleX = box.offsetLeft;
@@ -122,7 +151,34 @@ function move(box, moveBar) {
       if (lastX < 0) {
         lastX = 0;
       }
-      box.style.left = lastX + 'px';
+      if (lastX > window.screen.width - 600) {
+        lastX = window.screen.width - 600;
+      }
+
+      box.style.left = lastX + "px";
+    }, 10);
+    return false;
+  });
+}
+// 纵向拖动
+function moveCol(box) {
+  box.addEventListener("mousedown", function (e) {
+    const eleY = box.offsetTop;
+    const startY = e.clientY;
+    document.onmouseup = function () {
+      document.onmousemove = null;
+    };
+    document.onmousemove = throttle(function (e) {
+      let lastY = eleY + e.clientY - startY;
+      if (lastY < 10) {
+        lastY = 10;
+      }
+      console.log(document.body.clientHeight, window.screen.height)
+      if (lastY > window.screen.height - 256) {
+
+        lastY = window.screen.height - 256;
+      }
+      box.style.top = lastY + "px";
     }, 10);
     return false;
   });
