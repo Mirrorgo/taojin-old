@@ -6,11 +6,7 @@
   "background": {
     "service_worker": "service_worker.js"
   },
-  "permissions": [
-    "storage",
-    "activeTab",
-    "scripting"
-  ],
+  "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_title": "?tooltip",
     "default_popup": "/taojin/popup/index.html",
@@ -30,27 +26,16 @@
   "options_page": "/taojin/options/index.html",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "./content_script/server.js",
-        "./content_script/content-script.js"
-      ],
-      "css": [
-        "./content_script/my-styles.css"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["./content_script/content-script.js"],
+      "css": ["./content_script/my-styles.css"]
     }
   ],
   "devtools_page": "devtools.html",
   "web_accessible_resources": [
     {
-      "resources": [
-        "*"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "resources": ["*"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
