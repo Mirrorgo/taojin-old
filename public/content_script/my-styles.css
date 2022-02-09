@@ -42,8 +42,8 @@
   align-items: center;
   left: 10px;
   top: 10px;
-  height: 4rem;
-  width: 4rem;
+  height: 48px;
+  width: 48px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -51,8 +51,12 @@
   background-color: bisque;
   box-shadow: 0 0 10px bisque;
   font-size: xx-large;
-  line-height: 3rem;
+  line-height: 36px;
   z-index: 2147483647;
+}
+.search-content-button:hover {
+  color: bisque;
+  background-color: rgb(53,53,53);
 }
 .search-content-box {
   position: fixed;
@@ -67,18 +71,18 @@
 .search-content-bar {
   display: flex;
   flex-direction: row-reverse;
-  height: 3rem;
+  height: 36px;
   border-radius: 4px 4px 0 0;
   background-color: rgb(53,53,53);
 }
 .content-bar-button {
   height: 100%;
-  width: 4rem;
+  width: 48px;
   padding: 0;
   border: 0;
   border-radius: 0 4px 0 0;
   font-size: x-large;
-  line-height: 3rem;
+  line-height: 36px;
   color: bisque;
   background: rgb(53,53,53);
 }
@@ -86,8 +90,28 @@
 .content-bar-button:hover {
   background-color: black;
 }
-.search-content {
+
+.bing-search-content {
   border: 0;
-  height: calc(100% - 3rem);
+  height: calc(100% - 36px);
   width: 100%;
+}
+
+.baidu-search-content {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: calc(100% - 36px);
+  width: 100%;
+  overflow:scroll;
+}
+.baidu-search-content section{
+  margin: 16px;
+}
+.baidu-search-content h3 {
+  color: #001ba0;
+  margin-bottom: 4px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
 }

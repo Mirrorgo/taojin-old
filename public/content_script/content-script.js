@@ -78,7 +78,7 @@ function search() {
       console.log(inputEl)
       inputEl.value = "";
       controlSearchBar();
-      addSearchContent(searchTools[searchTool].url + searchValue);
+      addSearchContent(searchTools[searchTool].url + searchValue, searchTools[searchTool].name);
       return false;
 
     }
@@ -95,7 +95,7 @@ function showSearchContent() {
 
 // 添加搜索内容
 let maxZindex = 9999;
-function addSearchContent(url) {
+function addSearchContent(url, name) {
   // 搜索结果框体
   const searchContentBox = document.createElement("div");
   searchContentBox.className = "search-content-box";
@@ -128,15 +128,45 @@ function addSearchContent(url) {
   searchContentBar.appendChild(hideButton);
 
   // 搜索结果
-  const searchContent = document.createElement("iframe");
-  searchContent.src = url;
-  searchContent.className = "search-content";
-
-
-
+  let searchContent = null;
+  switch (name) {
+    case "bing":
+      searchContent = document.createElement("iframe");
+      searchContent.src = url;
+      searchContent.className = "bing-search-content";
+      break;
+    case "baidu":
+      searchContent = baiduSearchContent(url);
+      break;
+    default:
+      console.error("不支持这个搜索引擎");
+      break;
+  }
   searchContentBox.appendChild(searchContentBar);
   searchContentBox.appendChild(searchContent);
   document.body.appendChild(searchContentBox);
+}
+function baiduSearchContent(url) {
+  const searchContent = document.createElement("div");
+  searchContent.className = "baidu-search-content";
+  chrome.runtime.sendMessage(url + "&tn=json&rn=50", ({ feed: response }) => {
+    console.log(url, response);
+    const { entry } = response;
+    for (const { abs, title, url } of entry) {
+      if(!title) {
+        continue;
+      }
+      searchContent.innerHTML += `
+        <section>
+          <h3>
+            <a href="${url}" target="_blank">${title}</a>
+          </h3>
+          <div>${abs}</div>
+        </section>
+      `;
+    }
+  });
+  return searchContent;
 }
 // 横向拖动
 function move(box, moveBar) {

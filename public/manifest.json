@@ -34,6 +34,7 @@
         "<all_urls>"
       ],
       "js": [
+        "./content_script/server.js",
         "./content_script/content-script.js"
       ],
       "css": [
