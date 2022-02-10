@@ -16,10 +16,15 @@ searchContentButton.addEventListener("click", showSearchContent);
 moveCol(searchContentButton);
 console.log(searchContentButton)
 document.body.appendChild(searchContentButton);
-
+const searchButton = document.createElement("button");
+searchButton.className = "search-button";
+searchButton.innerHTML = '<svg t="1644458796131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2072" width="32" height="32"><path d="M469.333333 768c-166.4 0-298.666667-132.266667-298.666666-298.666667s132.266667-298.666667 298.666666-298.666666 298.666667 132.266667 298.666667 298.666666-132.266667 298.666667-298.666667 298.666667z m0-85.333333c119.466667 0 213.333333-93.866667 213.333334-213.333334s-93.866667-213.333333-213.333334-213.333333-213.333333 93.866667-213.333333 213.333333 93.866667 213.333333 213.333333 213.333334z m251.733334 0l119.466666 119.466666-59.733333 59.733334-119.466667-119.466667 59.733334-59.733333z" p-id="2073"></path></svg>';
+searchButton.addEventListener("click", controlSearchBar);
+moveCol(searchButton);
+document.body.appendChild(searchButton);
 
 // 创建搜索框
-document.addEventListener("keydown", addSearchBar());
+document.addEventListener("keydown", addSearchBar);
 const hideSearchContentList = [];
 const searchBar = document.createElement("div");
 let show = true;
@@ -36,6 +41,7 @@ inputEl.addEventListener("input", getSearchPrompt());
 inputEl.addEventListener("blur", function () {
   inputEl.value = "";
   searchPrompt.innerHTML = "";
+  show = true;
   searchBar.remove();
 });
 
@@ -55,24 +61,15 @@ function controlSearchBar() {
   show = !show;
 }
 // 控制搜索框是否显示
-function addSearchBar() {
-  let step = 0;
-  return function (e) {
-    if (step === 0 && e.ctrlKey) {
-      step = 1;
-    } else if (step === 1 && e.key === "q") {
-      controlSearchBar();
-      step = 0;
-    } else {
-      step = 0;
-    }
+function addSearchBar(e) {
+  if (e.key === "q" && e.ctrlKey) {
+    controlSearchBar();
   }
 }
 // 输入框的键盘事件
 function search() {
   return function (e) {
     console.log(e);
-    const inputEl = document.getElementById("search-input");
     if (e.key === "Tab") {
       console.log("tab");
       searchTool = (searchTool + 1) % searchTools.length;
@@ -155,7 +152,7 @@ function addSearchContent(url) {
 // https://cn.bing.com/AS/Suggestions?pt=page.serp&bq=bing+%E6%90%9C%E7%B4%A2%E6%8F%90%E7%A4%BA&mkt=zh-cn&ds=mobileweb&qry=bing%20s&asv=1&cp=6&msbqf=false&cvid=3A600DD985FD402997901DCF658A08FD
 // 搜索提示
 function getSearchPrompt() {
-  return function () {
+  return debounce(function () {
     console.log("change");
     const url = "https://cn.bing.com/AS/Suggestions?&mkt=zh-cn&cvid=BCA9094E94944E14A2710F627C26008&qry=" + inputEl.value;
     searchPrompt.className = "bing-search-prompt";
@@ -177,7 +174,7 @@ function getSearchPrompt() {
         });
       }
     });
-  }
+  }, 500);
 }
 
 // 百度搜索结果
@@ -222,7 +219,6 @@ function move(box, moveBar) {
       if (lastX > window.screen.width - 600) {
         lastX = window.screen.width - 600;
       }
-
       box.style.left = lastX + "px";
     }, 10);
     return false;
@@ -250,6 +246,20 @@ function moveCol(box) {
     }, 10);
     return false;
   });
+}
+// 防抖
+function debounce(func, wait) {
+  var timeout = null;
+  let that = this;
+  return function () {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(function () {
+      console.log("1")
+      func.apply(that, arguments)
+    }, wait);
+  }
 }
 // 节流
 function throttle(func, wait) {

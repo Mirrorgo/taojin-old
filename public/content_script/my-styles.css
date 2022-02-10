@@ -55,9 +55,10 @@
   justify-content: center;
   align-items: center;
   left: 10px;
-  top: 10px;
+  top: 70px;
   height: 48px;
   width: 48px;
+  margin: 0;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -72,6 +73,35 @@
   color: bisque;
   background-color: rgb(53,53,53);
 }
+
+.search-button {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 10px;
+  top: 10px;
+  height: 48px;
+  width: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: rgb(53,53,53);
+  background-color: bisque;
+  box-shadow: 0 0 10px bisque;
+  font-size: large;
+  line-height: 36px;
+  z-index: 2147483647;
+}
+.search-button svg {
+  fill: currentColor;
+}
+.search-button:hover {
+  color: bisque;
+  background-color: rgb(53,53,53);
+}
+
 .search-content-box {
   position: fixed;
   top:0;
