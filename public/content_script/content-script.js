@@ -1,5 +1,5 @@
 //// content-script.js ////
-const searchTools = [
+const searchToolList = [
   {
     name: "bing",
     url: "https://cn.bing.com/search?q=",
@@ -13,13 +13,17 @@ const searchContentButton = document.createElement("button");
 searchContentButton.className = "search-content-button";
 searchContentButton.innerHTML = "<div>T</div>";
 searchContentButton.addEventListener("click", showSearchContent);
-moveCol(searchContentButton);
-console.log(searchContentButton)
+moveY(searchContentButton);
 document.body.appendChild(searchContentButton);
-
+const searchBarButton = document.createElement("button");
+searchBarButton.className = "search-bar-button";
+searchBarButton.innerHTML = '<svg t="1644458796131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2072" width="32" height="32"><path d="M469.333333 768c-166.4 0-298.666667-132.266667-298.666666-298.666667s132.266667-298.666667 298.666666-298.666666 298.666667 132.266667 298.666667 298.666666-132.266667 298.666667-298.666667 298.666667z m0-85.333333c119.466667 0 213.333333-93.866667 213.333334-213.333334s-93.866667-213.333333-213.333334-213.333333-213.333333 93.866667-213.333333 213.333333 93.866667 213.333333 213.333333 213.333334z m251.733334 0l119.466666 119.466666-59.733333 59.733334-119.466667-119.466667 59.733334-59.733333z" p-id="2073"></path></svg>';
+searchBarButton.addEventListener("click", controlSearchBar);
+moveY(searchBarButton);
+document.body.appendChild(searchBarButton);
 
 // 创建搜索框
-document.addEventListener("keydown", addSearchBar());
+document.addEventListener("keydown", addSearchBar);
 const hideSearchContentList = [];
 const searchBar = document.createElement("div");
 let show = true;
@@ -29,13 +33,14 @@ searchBar.className = "taojin-searchbar";
 const inputEl = document.createElement("input");
 inputEl.id = "search-input";
 inputEl.className = "search-input";
-inputEl.placeholder = searchTools[0].name;
+inputEl.placeholder = searchToolList[0].name;
 inputEl.autocomplete = "off";
-inputEl.addEventListener("keydown", search());
+inputEl.addEventListener("keydown", listenInputKey());
 inputEl.addEventListener("input", getSearchPrompt());
 inputEl.addEventListener("blur", function () {
   inputEl.value = "";
   searchPrompt.innerHTML = "";
+  show = true;
   searchBar.remove();
 });
 
@@ -45,7 +50,6 @@ searchBar.appendChild(inputEl);
 searchBar.appendChild(searchPrompt);
 // 是否显示搜索框
 function controlSearchBar() {
-  console.log(show, searchBar);
   if (show) {
     document.body.appendChild(searchBar);
     inputEl.focus();
@@ -55,41 +59,28 @@ function controlSearchBar() {
   show = !show;
 }
 // 控制搜索框是否显示
-function addSearchBar() {
-  let step = 0;
-  return function (e) {
-    if (step === 0 && e.ctrlKey) {
-      step = 1;
-    } else if (step === 1 && e.key === "q") {
-      controlSearchBar();
-      step = 0;
-    } else {
-      step = 0;
-    }
+function addSearchBar(e) {
+  if (e.key === "q" && e.ctrlKey) {
+    controlSearchBar();
   }
 }
 // 输入框的键盘事件
-function search() {
+function listenInputKey() {
   return function (e) {
-    console.log(e);
-    const inputEl = document.getElementById("search-input");
     if (e.key === "Tab") {
-      console.log("tab");
-      searchTool = (searchTool + 1) % searchTools.length;
-      inputEl.placeholder = searchTools[searchTool].name;
+      searchTool = (searchTool + 1) % searchToolList.length;
+      inputEl.placeholder = searchToolList[searchTool].name;
       inputEl.focus();
       e.preventDefault();
       return false;
     }
     const searchValue = inputEl.value;
     if (e.key === "Enter" && searchValue) {
-      console.log(inputEl)
       controlSearchBar();
-      addSearchContent(searchTools[searchTool].url + searchValue.replaceAll(" ", "+"));
+      addSearchContent(searchToolList[searchTool].url + searchValue.replaceAll(" ", "+"));
       return false;
     }
   }
-
 }
 
 // 显示隐藏
@@ -108,12 +99,11 @@ function addSearchContent(url) {
   searchContentBox.style.zIndex = maxZindex++;
   searchContentBox.addEventListener("mousedown", function () {
     searchContentBox.style.zIndex = maxZindex++;
-    console.log(maxZindex);
   })
   // 顶部
   const searchContentBar = document.createElement("div");
   searchContentBar.className = "search-content-bar";
-  move(searchContentBox, searchContentBar);
+  moveX(searchContentBox, searchContentBar);
   // 关闭
   const deleteButton = document.createElement("button");
   deleteButton.className = "content-bar-button";
@@ -135,7 +125,7 @@ function addSearchContent(url) {
 
   // 搜索结果
   let searchContent = null;
-  switch (searchTools[searchTool].name) {
+  switch (searchToolList[searchTool].name) {
     case "bing":
       searchContent = document.createElement("iframe");
       searchContent.src = url;
@@ -155,8 +145,7 @@ function addSearchContent(url) {
 // https://cn.bing.com/AS/Suggestions?pt=page.serp&bq=bing+%E6%90%9C%E7%B4%A2%E6%8F%90%E7%A4%BA&mkt=zh-cn&ds=mobileweb&qry=bing%20s&asv=1&cp=6&msbqf=false&cvid=3A600DD985FD402997901DCF658A08FD
 // 搜索提示
 function getSearchPrompt() {
-  return function () {
-    console.log("change");
+  return debounce(function () {
     const url = "https://cn.bing.com/AS/Suggestions?&mkt=zh-cn&cvid=BCA9094E94944E14A2710F627C26008&qry=" + inputEl.value;
     searchPrompt.className = "bing-search-prompt";
     const message = {
@@ -172,12 +161,12 @@ function getSearchPrompt() {
         const node = nodeList[i]
         const promptVal = node.querySelector(".sa_tm_text").innerHTML.replaceAll(/<\/?strong>/g, "");
         node.addEventListener("mousedown", function () {
-          addSearchContent(searchTools[searchTool].url + promptVal.replaceAll(" ", "+"));
+          addSearchContent(searchToolList[searchTool].url + promptVal.replaceAll(" ", "+"));
           // controlSearchBar();
         });
       }
     });
-  }
+  }, 500);
 }
 
 // 百度搜索结果
@@ -189,7 +178,6 @@ function baiduSearchContent(url) {
     type: 1,
   }
   chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
-    console.log("kk")
     for (const { abs, title, url } of entry) {
       if (!title) {
         continue;
@@ -207,7 +195,7 @@ function baiduSearchContent(url) {
   return searchContent;
 }
 // 横向拖动
-function move(box, moveBar) {
+function moveX(box, moveBar) {
   moveBar.addEventListener("mousedown", function (e) {
     const eleX = box.offsetLeft;
     const startX = e.clientX;
@@ -222,14 +210,13 @@ function move(box, moveBar) {
       if (lastX > window.screen.width - 600) {
         lastX = window.screen.width - 600;
       }
-
       box.style.left = lastX + "px";
     }, 10);
     return false;
   });
 }
 // 纵向拖动
-function moveCol(box) {
+function moveY(box) {
   box.addEventListener("mousedown", function (e) {
     const eleY = box.offsetTop;
     const startY = e.clientY;
@@ -241,7 +228,6 @@ function moveCol(box) {
       if (lastY < 10) {
         lastY = 10;
       }
-      console.log(document.body.clientHeight, window.screen.height)
       if (lastY > window.screen.height - 256) {
 
         lastY = window.screen.height - 256;
@@ -250,6 +236,19 @@ function moveCol(box) {
     }, 10);
     return false;
   });
+}
+// 防抖
+function debounce(func, wait) {
+  var timeout = null;
+  let that = this;
+  return function () {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(function () {
+      func.apply(that, arguments)
+    }, wait);
+  }
 }
 // 节流
 function throttle(func, wait) {
