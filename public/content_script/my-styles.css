@@ -31,6 +31,7 @@
   color: black;
   margin: 10px;
   padding: 10px 20px;
+  box-sizing:content-box;
 }
 .search-input:focus {
   outline: 2px solid transparent;
@@ -74,7 +75,7 @@
   background-color: rgb(53,53,53);
 }
 
-.search-button {
+.search-bar-button {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -94,10 +95,10 @@
   line-height: 36px;
   z-index: 2147483647;
 }
-.search-button svg {
+.search-bar-button svg {
   fill: currentColor;
 }
-.search-button:hover {
+.search-bar-button:hover {
   color: bisque;
   background-color: rgb(53,53,53);
 }

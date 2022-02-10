@@ -1,5 +1,5 @@
 //// content-script.js ////
-const searchTools = [
+const searchToolList = [
   {
     name: "bing",
     url: "https://cn.bing.com/search?q=",
@@ -13,15 +13,14 @@ const searchContentButton = document.createElement("button");
 searchContentButton.className = "search-content-button";
 searchContentButton.innerHTML = "<div>T</div>";
 searchContentButton.addEventListener("click", showSearchContent);
-moveCol(searchContentButton);
-console.log(searchContentButton)
+moveY(searchContentButton);
 document.body.appendChild(searchContentButton);
-const searchButton = document.createElement("button");
-searchButton.className = "search-button";
-searchButton.innerHTML = '<svg t="1644458796131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2072" width="32" height="32"><path d="M469.333333 768c-166.4 0-298.666667-132.266667-298.666666-298.666667s132.266667-298.666667 298.666666-298.666666 298.666667 132.266667 298.666667 298.666666-132.266667 298.666667-298.666667 298.666667z m0-85.333333c119.466667 0 213.333333-93.866667 213.333334-213.333334s-93.866667-213.333333-213.333334-213.333333-213.333333 93.866667-213.333333 213.333333 93.866667 213.333333 213.333333 213.333334z m251.733334 0l119.466666 119.466666-59.733333 59.733334-119.466667-119.466667 59.733334-59.733333z" p-id="2073"></path></svg>';
-searchButton.addEventListener("click", controlSearchBar);
-moveCol(searchButton);
-document.body.appendChild(searchButton);
+const searchBarButton = document.createElement("button");
+searchBarButton.className = "search-bar-button";
+searchBarButton.innerHTML = '<svg t="1644458796131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2072" width="32" height="32"><path d="M469.333333 768c-166.4 0-298.666667-132.266667-298.666666-298.666667s132.266667-298.666667 298.666666-298.666666 298.666667 132.266667 298.666667 298.666666-132.266667 298.666667-298.666667 298.666667z m0-85.333333c119.466667 0 213.333333-93.866667 213.333334-213.333334s-93.866667-213.333333-213.333334-213.333333-213.333333 93.866667-213.333333 213.333333 93.866667 213.333333 213.333333 213.333334z m251.733334 0l119.466666 119.466666-59.733333 59.733334-119.466667-119.466667 59.733334-59.733333z" p-id="2073"></path></svg>';
+searchBarButton.addEventListener("click", controlSearchBar);
+moveY(searchBarButton);
+document.body.appendChild(searchBarButton);
 
 // 创建搜索框
 document.addEventListener("keydown", addSearchBar);
@@ -34,9 +33,9 @@ searchBar.className = "taojin-searchbar";
 const inputEl = document.createElement("input");
 inputEl.id = "search-input";
 inputEl.className = "search-input";
-inputEl.placeholder = searchTools[0].name;
+inputEl.placeholder = searchToolList[0].name;
 inputEl.autocomplete = "off";
-inputEl.addEventListener("keydown", search());
+inputEl.addEventListener("keydown", listenInputKey());
 inputEl.addEventListener("input", getSearchPrompt());
 inputEl.addEventListener("blur", function () {
   inputEl.value = "";
@@ -51,7 +50,6 @@ searchBar.appendChild(inputEl);
 searchBar.appendChild(searchPrompt);
 // 是否显示搜索框
 function controlSearchBar() {
-  console.log(show, searchBar);
   if (show) {
     document.body.appendChild(searchBar);
     inputEl.focus();
@@ -67,26 +65,22 @@ function addSearchBar(e) {
   }
 }
 // 输入框的键盘事件
-function search() {
+function listenInputKey() {
   return function (e) {
-    console.log(e);
     if (e.key === "Tab") {
-      console.log("tab");
-      searchTool = (searchTool + 1) % searchTools.length;
-      inputEl.placeholder = searchTools[searchTool].name;
+      searchTool = (searchTool + 1) % searchToolList.length;
+      inputEl.placeholder = searchToolList[searchTool].name;
       inputEl.focus();
       e.preventDefault();
       return false;
     }
     const searchValue = inputEl.value;
     if (e.key === "Enter" && searchValue) {
-      console.log(inputEl)
       controlSearchBar();
-      addSearchContent(searchTools[searchTool].url + searchValue.replaceAll(" ", "+"));
+      addSearchContent(searchToolList[searchTool].url + searchValue.replaceAll(" ", "+"));
       return false;
     }
   }
-
 }
 
 // 显示隐藏
@@ -105,12 +99,11 @@ function addSearchContent(url) {
   searchContentBox.style.zIndex = maxZindex++;
   searchContentBox.addEventListener("mousedown", function () {
     searchContentBox.style.zIndex = maxZindex++;
-    console.log(maxZindex);
   })
   // 顶部
   const searchContentBar = document.createElement("div");
   searchContentBar.className = "search-content-bar";
-  move(searchContentBox, searchContentBar);
+  moveX(searchContentBox, searchContentBar);
   // 关闭
   const deleteButton = document.createElement("button");
   deleteButton.className = "content-bar-button";
@@ -132,7 +125,7 @@ function addSearchContent(url) {
 
   // 搜索结果
   let searchContent = null;
-  switch (searchTools[searchTool].name) {
+  switch (searchToolList[searchTool].name) {
     case "bing":
       searchContent = document.createElement("iframe");
       searchContent.src = url;
@@ -153,7 +146,6 @@ function addSearchContent(url) {
 // 搜索提示
 function getSearchPrompt() {
   return debounce(function () {
-    console.log("change");
     const url = "https://cn.bing.com/AS/Suggestions?&mkt=zh-cn&cvid=BCA9094E94944E14A2710F627C26008&qry=" + inputEl.value;
     searchPrompt.className = "bing-search-prompt";
     const message = {
@@ -169,7 +161,7 @@ function getSearchPrompt() {
         const node = nodeList[i]
         const promptVal = node.querySelector(".sa_tm_text").innerHTML.replaceAll(/<\/?strong>/g, "");
         node.addEventListener("mousedown", function () {
-          addSearchContent(searchTools[searchTool].url + promptVal.replaceAll(" ", "+"));
+          addSearchContent(searchToolList[searchTool].url + promptVal.replaceAll(" ", "+"));
           // controlSearchBar();
         });
       }
@@ -186,7 +178,6 @@ function baiduSearchContent(url) {
     type: 1,
   }
   chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
-    console.log("kk")
     for (const { abs, title, url } of entry) {
       if (!title) {
         continue;
@@ -204,7 +195,7 @@ function baiduSearchContent(url) {
   return searchContent;
 }
 // 横向拖动
-function move(box, moveBar) {
+function moveX(box, moveBar) {
   moveBar.addEventListener("mousedown", function (e) {
     const eleX = box.offsetLeft;
     const startX = e.clientX;
@@ -225,7 +216,7 @@ function move(box, moveBar) {
   });
 }
 // 纵向拖动
-function moveCol(box) {
+function moveY(box) {
   box.addEventListener("mousedown", function (e) {
     const eleY = box.offsetTop;
     const startY = e.clientY;
@@ -237,7 +228,6 @@ function moveCol(box) {
       if (lastY < 10) {
         lastY = 10;
       }
-      console.log(document.body.clientHeight, window.screen.height)
       if (lastY > window.screen.height - 256) {
 
         lastY = window.screen.height - 256;
@@ -256,7 +246,6 @@ function debounce(func, wait) {
       clearTimeout(timeout);
     }
     timeout = setTimeout(function () {
-      console.log("1")
       func.apply(that, arguments)
     }, wait);
   }
