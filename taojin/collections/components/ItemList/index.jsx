@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import Note from "../Note";
+import Site from "../Site";
 import { useEffect } from "react";
 
 export default function ItemList({
@@ -29,7 +30,7 @@ const Item = ({
   //FIXME:👇貌似不太行,怎么样获取数据比较合理?
   let item = localStorage.getItem(itemId)
     ? JSON.parse(localStorage.getItem(itemId))
-    : { itemType: "" };//得给个凑数的,不然删除的时候会报错
+    : { itemType: "" }; //得给个凑数的,不然删除的时候会报错
 
   //先暂时这么写
   switch (item.itemType) {
@@ -43,7 +44,7 @@ const Item = ({
         />
       );
     case "site":
-      return <div>这是个site</div>;
+      return <Site></Site>;
     default:
       return (
         <article>

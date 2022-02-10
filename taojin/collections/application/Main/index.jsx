@@ -175,30 +175,7 @@ export default function Main() {
     );
   }; */
   //NOTE:cly的部分
-  const addSite = () => {
-    const newKey = nanoid(); //生成一个随机的key
-    let content = {};
-    content.siteTitle = document.title;
-    content.siteOrigin = location.origin;
-    content.hostName = location.hostname;
-    let scroll_top = 0; // 获取滚动高度
-    if (document.documentElement && document.documentElement.scrollTop) {
-      scroll_top = document.documentElement.scrollTop;
-    } else if (document.body) {
-      scroll_top = document.body.scrollTop;
-    }
-    //  截图当前网页窗口
-    html2canvas(document.querySelector("body"), {
-      y: scroll_top,
-      width: window.innerWidth,
-      height: window.innerHeight,
-    }).then((canvas) => {
-      content.siteImg = canvas.toDataURL("image/png", 0.2);
-      // let imgElement = document.createElement('img')
-      // imgElement.src = canvas.toDataURL("image/png", 0.5);  // 将网页转成base64字符编码，0.5为图片质量
-      // document.body.appendChild(imgElement)   // 我直接插个dom看效果
-    });
-  };
+  const addSite = () => {};
   const handleDragEnd = (event) => {
     const { active, over } = event; //active:被拖动的元素,over:在active下方的元素
     if (active.id !== over.id) {
@@ -280,12 +257,41 @@ export default function Main() {
   const showMoreCollection = () => {
     setShowLeftPanel(true);
   };
+  //测试chrome接口
+  const handleTest = (first) => {
+    chrome.storage.sync.set({ addSite: true }, function () {
+      //是在获取的时候执行吗
+    });
+  };
+  const [test2, setTest2] = useState("nothing");
+  const handleTest2 = (first) => {
+    chrome.storage.sync.get("test", function (res) {
+      // setTest2(res);
+      setTest2(res.test);
+      console.log(res);
+      console.dir(res);
+    });
+  };
+
+  useEffect(() => {
+    chrome.storage.onChanged.addListener(function (changes, areaName) {
+      console.log("Value in " + areaName + " has been changed:");
+      console.log(changes);
+    });
+    return () => {
+      //记得清除listener
+    };
+  }, []);
+
+  //
   return (
     <div className="all">
       <aside className={!showLeftPanel ? "left-panel" : "hover-left-panel"}>
         <div className="fixed-bar">
           <header className="title">
             <div>Collections</div>
+            <button onClick={() => handleTest()}>测试{test}</button>
+            <button onClick={() => handleTest2()}>测试2{test2}</button>
           </header>
           <button className="add-new-collection" onClick={handleAddCollection}>
             Add new collection
