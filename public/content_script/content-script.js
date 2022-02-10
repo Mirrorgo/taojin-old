@@ -196,7 +196,7 @@ function baiduSearchContent(url) {
       searchContent.innerHTML += `
         <section>
           <h3>
-            <a href="${url}" target="_blank">${title}</a>
+            <a href="${url}">${title}</a>
           </h3>
           <div>${abs}</div>
         </section>
