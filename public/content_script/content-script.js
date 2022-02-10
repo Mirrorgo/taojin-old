@@ -3,10 +3,11 @@ const searchToolList = [
   {
     name: "bing",
     url: "https://cn.bing.com/search?q=",
-  }, {
+  },
+  {
     name: "baidu",
     url: "https://www.baidu.com/s?wd=",
-  }
+  },
 ];
 let searchTool = 0;
 const searchContentButton = document.createElement("button");
@@ -17,7 +18,8 @@ moveY(searchContentButton);
 document.body.appendChild(searchContentButton);
 const searchBarButton = document.createElement("button");
 searchBarButton.className = "search-bar-button";
-searchBarButton.innerHTML = '<svg t="1644458796131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2072" width="32" height="32"><path d="M469.333333 768c-166.4 0-298.666667-132.266667-298.666666-298.666667s132.266667-298.666667 298.666666-298.666666 298.666667 132.266667 298.666667 298.666666-132.266667 298.666667-298.666667 298.666667z m0-85.333333c119.466667 0 213.333333-93.866667 213.333334-213.333334s-93.866667-213.333333-213.333334-213.333333-213.333333 93.866667-213.333333 213.333333 93.866667 213.333333 213.333333 213.333334z m251.733334 0l119.466666 119.466666-59.733333 59.733334-119.466667-119.466667 59.733334-59.733333z" p-id="2073"></path></svg>';
+searchBarButton.innerHTML =
+  '<svg t="1644458796131" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2072" width="32" height="32"><path d="M469.333333 768c-166.4 0-298.666667-132.266667-298.666666-298.666667s132.266667-298.666667 298.666666-298.666666 298.666667 132.266667 298.666667 298.666666-132.266667 298.666667-298.666667 298.666667z m0-85.333333c119.466667 0 213.333333-93.866667 213.333334-213.333334s-93.866667-213.333333-213.333334-213.333333-213.333333 93.866667-213.333333 213.333333 93.866667 213.333333 213.333333 213.333334z m251.733334 0l119.466666 119.466666-59.733333 59.733334-119.466667-119.466667 59.733334-59.733333z" p-id="2073"></path></svg>';
 searchBarButton.addEventListener("click", controlSearchBar);
 moveY(searchBarButton);
 document.body.appendChild(searchBarButton);
@@ -53,10 +55,11 @@ function controlSearchBar() {
   if (show) {
     document.body.appendChild(searchBar);
     inputEl.focus();
+    show = false;
   } else {
     inputEl.blur();
+    show = true;
   }
-  show = !show;
 }
 // 控制搜索框是否显示
 function addSearchBar(e) {
@@ -77,10 +80,12 @@ function listenInputKey() {
     const searchValue = inputEl.value;
     if (e.key === "Enter" && searchValue) {
       controlSearchBar();
-      addSearchContent(searchToolList[searchTool].url + searchValue.replaceAll(" ", "+"));
+      addSearchContent(
+        searchToolList[searchTool].url + searchValue.replaceAll(" ", "+")
+      );
       return false;
     }
-  }
+  };
 }
 
 // 显示隐藏
@@ -99,7 +104,7 @@ function addSearchContent(url) {
   searchContentBox.style.zIndex = maxZindex++;
   searchContentBox.addEventListener("mousedown", function () {
     searchContentBox.style.zIndex = maxZindex++;
-  })
+  });
   // 顶部
   const searchContentBar = document.createElement("div");
   searchContentBar.className = "search-content-bar";
@@ -109,7 +114,7 @@ function addSearchContent(url) {
   deleteButton.className = "content-bar-button";
   deleteButton.innerHTML = "X";
   deleteButton.addEventListener("click", function () {
-    searchContentBox.remove()
+    searchContentBox.remove();
   });
   // 隐藏
   const hideButton = document.createElement("button");
@@ -146,22 +151,28 @@ function addSearchContent(url) {
 // 搜索提示
 function getSearchPrompt() {
   return debounce(function () {
-    const url = "https://cn.bing.com/AS/Suggestions?&mkt=zh-cn&cvid=BCA9094E94944E14A2710F627C26008&qry=" + inputEl.value;
+    const url =
+      "https://cn.bing.com/AS/Suggestions?&mkt=zh-cn&cvid=BCA9094E94944E14A2710F627C26008&qry=" +
+      inputEl.value;
     searchPrompt.className = "bing-search-prompt";
     const message = {
       type: 2,
       url,
-    }
+    };
     chrome.runtime.sendMessage(message, (response) => {
       searchPrompt.innerHTML = response
         .replaceAll(/(<script(.*?)>)(.|\n)*?(<\/script>)/g, "")
         .replaceAll(/(<li(.*?)stype="HS"(.*?)>)(.|\n)*?(<\/li>)/g, "");
       const nodeList = document.querySelectorAll(".sa_sg");
       for (let i = 0, len = nodeList.length; i < len; i++) {
-        const node = nodeList[i]
-        const promptVal = node.querySelector(".sa_tm_text").innerHTML.replaceAll(/<\/?strong>/g, "");
+        const node = nodeList[i];
+        const promptVal = node
+          .querySelector(".sa_tm_text")
+          .innerHTML.replaceAll(/<\/?strong>/g, "");
         node.addEventListener("mousedown", function () {
-          addSearchContent(searchToolList[searchTool].url + promptVal.replaceAll(" ", "+"));
+          addSearchContent(
+            searchToolList[searchTool].url + promptVal.replaceAll(" ", "+")
+          );
           // controlSearchBar();
         });
       }
@@ -176,7 +187,7 @@ function baiduSearchContent(url) {
   const message = {
     url: url + "&tn=json&rn=50",
     type: 1,
-  }
+  };
   chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
     for (const { abs, title, url } of entry) {
       if (!title) {
@@ -229,7 +240,6 @@ function moveY(box) {
         lastY = 10;
       }
       if (lastY > window.screen.height - 256) {
-
         lastY = window.screen.height - 256;
       }
       box.style.top = lastY + "px";
@@ -246,9 +256,9 @@ function debounce(func, wait) {
       clearTimeout(timeout);
     }
     timeout = setTimeout(function () {
-      func.apply(that, arguments)
+      func.apply(that, arguments);
     }, wait);
-  }
+  };
 }
 // 节流
 function throttle(func, wait) {
@@ -260,14 +270,9 @@ function throttle(func, wait) {
       func.apply(that, arguments);
       previous = now;
     }
-  }
+  };
 }
 console.log("over");
-
-
-
-
-
 
 // let searchbar = document.createElement("iframe");
 // searchbar.src = chrome.runtime.getURL("../../taojin/searchbar/index.html");
