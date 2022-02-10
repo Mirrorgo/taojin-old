@@ -174,8 +174,33 @@ export default function Main() {
       reorderedItems
     );
   }; */
-  //NOTE:cly的部分
-  const addSite = () => {};
+  //与chrome相关:addSite
+  useEffect(() => {
+    chrome.storage.onChanged.addListener(function (changes, areaName) {
+      //✅listen
+      console.log("Value in " + areaName + " has been changed:");
+      console.log(changes);
+      chrome.storage.sync.get("newSite", function (res) {
+        //✅读取newSite
+        // setTest2(res);
+        // setTest2(res.test);
+        console.log("这是newSite的res", res);
+        console.dir(res);
+        //真正的addSite:修改collection
+      });
+    });
+    return () => {
+      //TODO:记得清除listener
+    };
+  }, []);
+
+  const addSite = () => {
+    //✅addSite => true
+    console.log("点击了add site");
+    chrome.storage.sync.set({ addSite: true }, function () {
+      //是在获取的时候执行吗?如果是,目前不用管
+    });
+  };
   const handleDragEnd = (event) => {
     const { active, over } = event; //active:被拖动的元素,over:在active下方的元素
     if (active.id !== over.id) {
@@ -257,41 +282,12 @@ export default function Main() {
   const showMoreCollection = () => {
     setShowLeftPanel(true);
   };
-  //测试chrome接口
-  const handleTest = (first) => {
-    chrome.storage.sync.set({ addSite: true }, function () {
-      //是在获取的时候执行吗
-    });
-  };
-  const [test2, setTest2] = useState("nothing");
-  const handleTest2 = (first) => {
-    chrome.storage.sync.get("test", function (res) {
-      // setTest2(res);
-      setTest2(res.test);
-      console.log(res);
-      console.dir(res);
-    });
-  };
-
-  useEffect(() => {
-    chrome.storage.onChanged.addListener(function (changes, areaName) {
-      console.log("Value in " + areaName + " has been changed:");
-      console.log(changes);
-    });
-    return () => {
-      //记得清除listener
-    };
-  }, []);
-
-  //
   return (
     <div className="all">
       <aside className={!showLeftPanel ? "left-panel" : "hover-left-panel"}>
         <div className="fixed-bar">
           <header className="title">
             <div>Collections</div>
-            <button onClick={() => handleTest()}>测试{test}</button>
-            <button onClick={() => handleTest2()}>测试2{test2}</button>
           </header>
           <button className="add-new-collection" onClick={handleAddCollection}>
             Add new collection
