@@ -28,6 +28,7 @@
   height: 46px;
   font-size: x-large;
   background-color: bisque;
+  color: black;
   margin: 10px;
   padding: 10px 20px;
 }
@@ -35,6 +36,19 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
+.bing-search-prompt li{
+  margin: 10px;
+  color: black;
+  padding-left: 20px;
+  font-size: larger;
+  line-height: 36px;
+  list-style: none;
+}
+.bing-search-prompt li:hover {
+  background-color: bisque;
+}
+
 .search-content-button {
   position: fixed;
   display: flex;
@@ -109,9 +123,11 @@
   margin: 16px;
 }
 .baidu-search-content h3 {
-  color: #001ba0;
   margin-bottom: 4px;
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
+}
+.baidu-search-content a:link {
+  color: #001ba0;
 }
