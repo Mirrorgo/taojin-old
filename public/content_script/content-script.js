@@ -1,4 +1,5 @@
 //// content-script.js ////
+/*global chrome*/
 const searchToolList = [
   {
     name: "bing",
@@ -290,8 +291,36 @@ icon.style.height = "25px";
 icon.style.width = "25px";
 icon.style.cursor = "pointer";
 icon.style.zIndex = "10000";
-icon.onclick = (ev) => {
-  console.log("点击");
+icon.onclick = async (ev) => {
+  let content = {};
+  content.siteTitle = selectedMessage || document.title;
+  content.siteUrl = location.href;
+  content.siteOrigin = location.origin;
+  content.hostName = location.hostname;
+  // let scroll_top = 0;  // 获取滚动高度
+  // if (document.documentElement && document.documentElement.scrollTop) {
+  //   scroll_top = document.documentElement.scrollTop;
+  // } else if (document.body) {
+  //   scroll_top = document.body.scrollTop;
+  // }
+  // const result = await html2canvas(
+  //   document.querySelector('body'),
+  //   {
+  //     y: scroll_top,
+  //     width: window.innerWidth,
+  //     height: window.innerHeight,
+  //   });
+
+  // content.siteImg = result.toDataURL('image/png', 0.2);
+  chrome.storage.sync.set({
+      newSite:
+        {
+          'ti': new Date().getTime(),
+          'content': content
+        }
+    },() => {
+    console.log('设置newSite成功：',{'ti': new Date().getTime(), 'content': content})
+  })
 };
 
 document.onmouseup = function (e) {
