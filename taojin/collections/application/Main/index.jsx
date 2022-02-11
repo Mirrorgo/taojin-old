@@ -188,7 +188,7 @@ export default function Main() {
         "https://www.baidu.com/s?cl=3&tn=baidutop10&fr=top1000&rsv_idx=2&rsv_dl=fyb_n_homepage&sa=fyb_n_homepage&hisfilter=1&wd=%E5%86%B0%E9%9B%AA%E4%B8%BA%E5%AA%92%20%E5%85%B1%E8%B5%B4%E5%86%AC%E5%A5%A5%E4%B9%8B%E7%BA%A6",
     },
   });
-  /*  useEffect(() => {
+  /* useEffect(() => {
     chrome.storage.onChanged.addListener(function (changes, areaName) {
       //✅listen
       console.log("Value in " + areaName + " has been changed:");
@@ -205,9 +205,20 @@ export default function Main() {
     return () => {
       //TODO:记得清除listener
     };
-  }, []);
- */
+  }, []); */
+
   const addSite = () => {
+    //测试
+    // chrome.storage.sync.get("newSite", function (res) {
+    //   //✅读取newSite
+    //   // setTest2(res);
+    //   // setTest2(res.test);
+    //   console.log("这是newSite的res", res);
+    //   console.dir(res);
+    //   //真正的addSite:修改collection
+    // });
+
+    //
     //✅addSite => true
     console.log("点击了add site");
     /* chrome.storage.sync.set({ addSite: true }, function () {
