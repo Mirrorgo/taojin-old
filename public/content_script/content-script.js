@@ -144,7 +144,7 @@ function addSearchContent(url) {
       //     nodeList[i].target = "_parent";
       //   }
       //   console.log("load",nodeList);
-      // }) 
+      // })
       // console.log(searchContent.document);
       break;
     case "baidu":
@@ -196,34 +196,17 @@ function getSearchPrompt() {
 function baiduSearchContent(url) {
   const searchContent = document.createElement("div");
   searchContent.className = "baidu-search-content";
-<<<<<<< HEAD
-  const message = {
-    url: url + "&tn=json&rn=50",
-    type: 1,
-  };
-  chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
-    for (const { abs, title, url } of entry) {
-      if (!title) {
-        continue;
-      }
-      searchContent.innerHTML += `
-        <section>
-          <h3>
-            <a href="${url}">${title}</a>
-          </h3>
-          <div>${abs}</div>
-        </section>
-      `;
-=======
   const infiniteScroll = document.createElement("div");
   infiniteScroll.id = "infinite-scroll";
   searchContent.appendChild(infiniteScroll);
   let searchContentLength = 0;
   infiniteScroll.parentNode.addEventListener("scroll", function () {
     const fun = throttle(getBaiduSearchContent, 100);
-    if (infiniteScroll.getBoundingClientRect().bottom <= infiniteScroll.parentNode.getBoundingClientRect().bottom + 1) {
+    if (
+      infiniteScroll.getBoundingClientRect().bottom <=
+      infiniteScroll.parentNode.getBoundingClientRect().bottom + 1
+    ) {
       fun(searchContentLength, 10, url);
->>>>>>> c0ffcd5532f47ae5d492606532598083e3cf01ab
     }
   });
   getBaiduSearchContent(searchContentLength, 20, url);
@@ -231,7 +214,7 @@ function baiduSearchContent(url) {
     const message = {
       url: url + `&tn=json&pn=${offset}&rn=${limit}`,
       type: 1,
-    }
+    };
     chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
       for (const { abs, title, url } of entry) {
         const section = document.createElement("section");
@@ -359,15 +342,20 @@ icon.onclick = async (ev) => {
   //   });
 
   // content.siteImg = result.toDataURL('image/png', 0.2);
-  chrome.storage.sync.set({
-      newSite:
-        {
-          'ti': new Date().getTime(),
-          'content': content
-        }
-    },() => {
-    console.log('设置newSite成功：',{'ti': new Date().getTime(), 'content': content})
-  })
+  chrome.storage.sync.set(
+    {
+      newSite: {
+        ti: new Date().getTime(),
+        content: content,
+      },
+    },
+    () => {
+      console.log("设置newSite成功：", {
+        ti: new Date().getTime(),
+        content: content,
+      });
+    }
+  );
 };
 
 document.onmouseup = function (e) {
