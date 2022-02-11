@@ -291,9 +291,9 @@ icon.style.height = "25px";
 icon.style.width = "25px";
 icon.style.cursor = "pointer";
 icon.style.zIndex = "10000";
-icon.onclick = async (ev) => {
+const siteInfo = async (ev) => {
   let content = {};
-  content.siteTitle = selectedMessage || document.title;
+  content.siteTitle = ev ? selectedMessage : document.title;
   content.siteUrl = location.href;
   content.siteOrigin = location.origin;
   content.hostName = location.hostname;
@@ -322,6 +322,7 @@ icon.onclick = async (ev) => {
     console.log('设置newSite成功：',{'ti': new Date().getTime(), 'content': content})
   })
 };
+icon.onclick = siteInfo
 
 document.onmouseup = function (e) {
   selection(e);
@@ -342,3 +343,16 @@ function selection(e) {
     selectedMessage = selection.toString();
   }
 }
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName !== 'sync') return
+  for (let key in changes) {
+    if (changes[key].newValue === true) {
+      console.log('执行发送siteInfo')
+      siteInfo(null)
+      chrome.storage.sync.set({addSite: false}, () => {
+        console.log('设置addSite为false成功')
+      })
+    }
+  }
+})
