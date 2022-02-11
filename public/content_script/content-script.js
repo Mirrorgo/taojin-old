@@ -24,7 +24,7 @@ document.body.appendChild(searchBarButton);
 
 // 创建搜索框
 document.addEventListener("keydown", addSearchBar);
-const hideSearchContentList = [];
+let hideSearchContentList = [];
 const searchBar = document.createElement("div");
 let show = true;
 searchBar.id = "taojin-searchbar";
@@ -53,10 +53,11 @@ function controlSearchBar() {
   if (show) {
     document.body.appendChild(searchBar);
     inputEl.focus();
+    show = false;
   } else {
     inputEl.blur();
+    show = true;
   }
-  show = !show;
 }
 // 控制搜索框是否显示
 function addSearchBar(e) {
@@ -88,6 +89,7 @@ function showSearchContent() {
   for (const el of hideSearchContentList) {
     el.style.display = "block";
   }
+  hideSearchContentList = [];
 }
 
 // 添加搜索内容
@@ -130,9 +132,19 @@ function addSearchContent(url) {
       searchContent = document.createElement("iframe");
       searchContent.src = url;
       searchContent.className = "bing-search-content";
+      // searchContent.addEventListener("load", function() {
+      //   console.log(searchContent.contentWindow.document);
+      //   const nodeList = searchContent.contentWindow.document.querySelector("a[target]");
+      //   for(let i = 0, len = nodeList.length;i<len;i++) {
+      //     nodeList[i].target = "_parent";
+      //   }
+      //   console.log("load",nodeList);
+      // }) 
+      // console.log(searchContent.document);
       break;
     case "baidu":
       searchContent = baiduSearchContent(url);
+
       break;
     default:
       console.error("不支持这个搜索引擎");
@@ -173,25 +185,39 @@ function getSearchPrompt() {
 function baiduSearchContent(url) {
   const searchContent = document.createElement("div");
   searchContent.className = "baidu-search-content";
-  const message = {
-    url: url + "&tn=json&rn=50",
-    type: 1,
-  }
-  chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
-    for (const { abs, title, url } of entry) {
-      if (!title) {
-        continue;
-      }
-      searchContent.innerHTML += `
-        <section>
-          <h3>
-            <a href="${url}" target="_blank">${title}</a>
-          </h3>
-          <div>${abs}</div>
-        </section>
-      `;
+  const infiniteScroll = document.createElement("div");
+  infiniteScroll.id = "infinite-scroll";
+  searchContent.appendChild(infiniteScroll);
+  let searchContentLength = 0;
+  infiniteScroll.parentNode.addEventListener("scroll", function () {
+    const fun = throttle(getBaiduSearchContent, 100);
+    if (infiniteScroll.getBoundingClientRect().bottom <= infiniteScroll.parentNode.getBoundingClientRect().bottom + 1) {
+      fun(searchContentLength, 10, url);
     }
   });
+  getBaiduSearchContent(searchContentLength, 20, url);
+  function getBaiduSearchContent(offset, limit, url) {
+    const message = {
+      url: url + `&tn=json&pn=${offset}&rn=${limit}`,
+      type: 1,
+    }
+    chrome.runtime.sendMessage(message, ({ feed: { entry } }) => {
+      for (const { abs, title, url } of entry) {
+        const section = document.createElement("section");
+        if (!title) {
+          continue;
+        }
+        section.innerHTML += `
+            <h3>
+              <a href="${url}">${title}</a>
+            </h3>
+            <div>${abs}</div>
+        `;
+        searchContent.insertBefore(section, infiniteScroll);
+      }
+    });
+    searchContentLength += limit;
+  }
   return searchContent;
 }
 // 横向拖动
@@ -234,6 +260,7 @@ function moveY(box) {
       }
       box.style.top = lastY + "px";
     }, 10);
+    e.preventDefault();
     return false;
   });
 }
@@ -257,6 +284,7 @@ function throttle(func, wait) {
     let that = this;
     let now = Date.now();
     if (now - previous > wait) {
+      console.log("go");
       func.apply(that, arguments);
       previous = now;
     }

@@ -31,7 +31,7 @@
   color: black;
   margin: 10px;
   padding: 10px 20px;
-  box-sizing:content-box;
+  box-sizing: content-box;
 }
 .search-input:focus {
   outline: 2px solid transparent;
