@@ -44,7 +44,14 @@ const Item = ({
         />
       );
     case "site":
-      return <Site></Site>;
+      return (
+        <Site
+          content={item.content}
+          itemId={itemId}
+          saveItemData={saveItemData}
+          deleteItem={deleteItem}
+        ></Site>
+      );
     default:
       return (
         <article>
