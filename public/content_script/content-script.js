@@ -357,7 +357,7 @@ const siteInfo = async (ev) => {
     }
   );
 };
-icon.onclick = siteInfo
+icon.onclick = siteInfo;
 
 document.onmouseup = function (e) {
   selection(e);
@@ -380,14 +380,25 @@ function selection(e) {
 }
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
-  if (areaName !== 'sync') return
-  for (let key in changes) {
-    if (changes[key].newValue === true) {
-      console.log('执行发送siteInfo')
-      siteInfo(null)
-      chrome.storage.sync.set({addSite: false}, () => {
-        console.log('设置addSite为false成功')
-      })
+  console.log("改变了", changes);
+  if (areaName !== "sync") return;
+  //测试错误
+  if (changes.addSite) {
+    if (changes.addSite.newValue === true) {
+      console.log("执行发送siteInfo");
+      siteInfo(null);
+      chrome.storage.sync.set({ addSite: false }, () => {
+        console.log("设置addSite为false成功");
+      });
     }
   }
-})
+  // for (let key in changes) {
+  //   if (changes[key].newValue === true) {
+  //     console.log("执行发送siteInfo");
+  //     siteInfo(null);
+  //     chrome.storage.sync.set({ addSite: false }, () => {
+  //       console.log("设置addSite为false成功");
+  //     });
+  //   }
+  // }
+});

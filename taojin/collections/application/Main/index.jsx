@@ -188,24 +188,51 @@ export default function Main() {
         "https://www.baidu.com/s?cl=3&tn=baidutop10&fr=top1000&rsv_idx=2&rsv_dl=fyb_n_homepage&sa=fyb_n_homepage&hisfilter=1&wd=%E5%86%B0%E9%9B%AA%E4%B8%BA%E5%AA%92%20%E5%85%B1%E8%B5%B4%E5%86%AC%E5%A5%A5%E4%B9%8B%E7%BA%A6",
     },
   });
-  /* useEffect(() => {
+  useEffect(() => {
+    console.log("collection的监听事件添加成功");
     chrome.storage.onChanged.addListener(function (changes, areaName) {
       //✅listen
-      console.log("Value in " + areaName + " has been changed:");
-      console.log(changes);
-      chrome.storage.sync.get("newSite", function (res) {
-        //✅读取newSite
-        // setTest2(res);
-        // setTest2(res.test);
-        console.log("这是newSite的res", res);
-        console.dir(res);
-        //真正的addSite:修改collection
-      });
+      /* console.log("Value in " + areaName + " has been changed:");
+      console.log(changes); */
+      console.log(changes, "?");
+      if (changes.newSite) {
+        // console.log(changes.newSite.newValue);
+        let newContent = changes.newSite.newValue.content;
+        console.log(newContent, "!content");
+        let collectedSite = {
+          itemType: "site",
+          content: {
+            siteTitle: newContent.siteTitle,
+            siteOrigin: newContent.siteOrigin,
+            hostName: newContent.hostName,
+            imageData: "",
+            siteUrl: newContent.siteUrl,
+          },
+        };
+        //FIXME
+        // if (!user.userActiveCollection) {
+        //   return;
+        // } //防止没有集锦的时候添加item
+        const newId = nanoid();
+        setCollection((draft) => {
+          draft.itemIds.push(newId);
+        });
+        console.log(collectedSite, "=>");
+        localStorage.setItem(newId, JSON.stringify(collectedSite)); //这个是否要放入useEffect?怎么放?
+
+        /* chrome.storage.sync.get("newSite", function (res) {
+          //✅读取newSite
+          // chrome.storage.sync.get("newSite",function(res){console.log(res.newSite)})
+          console.log("这是newSite的res的newSite", res.newSite);
+          //真正的addSite:修改collection
+          // localStorage.setItem(newId, JSON.stringify(mockSite)); //这个是否要放入useEffect?怎么放?
+        }); */
+      }
     });
     return () => {
       //TODO:记得清除listener
     };
-  }, []); */
+  }, []);
 
   const addSite = () => {
     //测试
@@ -218,21 +245,21 @@ export default function Main() {
     //   //真正的addSite:修改collection
     // });
 
-    //
     //✅addSite => true
     console.log("点击了add site");
-    /* chrome.storage.sync.set({ addSite: true }, function () {
+    chrome.storage.sync.set({ addSite: true }, function () {
       //是在获取的时候执行吗?如果是,目前不用管
-    }); */
+      console.log("set addSite 为true");
+    });
     // const newSite = mockSite
-    if (!user.userActiveCollection) {
+    /* if (!user.userActiveCollection) {
       return;
     } //防止没有集锦的时候添加item
     const newId = nanoid();
     setCollection((draft) => {
       draft.itemIds.push(newId);
-    });
-    localStorage.setItem(newId, JSON.stringify(mockSite)); //这个是否要放入useEffect?怎么放?
+    }); */
+    // localStorage.setItem(newId, JSON.stringify(mockSite)); //这个是否要放入useEffect?怎么放?
   };
 
   const handleDragEnd = (event) => {
