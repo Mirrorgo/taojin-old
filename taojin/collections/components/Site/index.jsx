@@ -42,8 +42,8 @@ export default function Site({ content, itemId, saveItemData, deleteItem }) {
   console.log(content);
   return (
     <article className="site" ref={setNodeRef} style={style}>
-      <div>
-        <div>
+      <div className="two-columns-display">
+        <div className="left-column">
           <a
             className="siteTitle"
             href={content.siteUrl}
@@ -52,12 +52,12 @@ export default function Site({ content, itemId, saveItemData, deleteItem }) {
           >
             {content.siteTitle}
           </a>
-          <div>
-            <img src="" alt="siteIcon" />
-            <span>{content.siteOrigin}</span>
+          <div className="origin-icon-bar">
+            <img className="site-icon" src="" alt="siteIcon" />
+            <span className="site-origin">{content.siteOrigin}</span>
           </div>
         </div>
-        <img src="" alt="nothing" />
+        <img className="right-column" src="" alt="nothing" />
       </div>
       <div
         style={{

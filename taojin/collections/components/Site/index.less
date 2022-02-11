@@ -1,10 +1,35 @@
 .site {
   background-color: #ffffff;
-  .siteTitle {
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
-    line-height: 1rem;
-    font-weight: bold;
-    font-size: 0.75rem;
+  .two-columns-display {
+    display: flex;
+    justify-content: space-between;
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .siteTitle {
+        margin-top: 0.3rem;
+        margin-bottom: 0.3rem;
+        line-height: 1rem;
+        font-weight: bold;
+        font-size: 0.75rem;
+        color: black;
+      }
+      .origin-icon-bar {
+        .site-icon {
+          width: 30px;
+          height: 30px;
+        }
+        .site-origin {
+          color: gray;
+        }
+      }
+    }
+    .right-column {
+      margin: 10px;
+      width: 120px;
+      height: 60px;
+      background-color: gray;
+    }
   }
 }
