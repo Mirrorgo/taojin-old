@@ -190,6 +190,7 @@ export default function Main() {
   });
   useEffect(() => {
     console.log("collection的监听事件添加成功");
+    chrome.storage.sync.set({ addSite: false });
     chrome.storage.onChanged.addListener(function (changes, areaName) {
       //✅listen
       /* console.log("Value in " + areaName + " has been changed:");
